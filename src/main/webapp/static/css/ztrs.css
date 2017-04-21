@@ -1,0 +1,396 @@
+
+body {
+    margin: 0px;
+    height:100%;
+    background-color: #f9fafc;
+}
+
+::-webkit-scrollbar/*整体部分*/
+{
+    width: 10px;
+    height:10px;
+}
+
+::-webkit-scrollbar-track/*滑动轨道*/
+{
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    border-radius: 0px;
+    background: rgba(0,0,0,0.1);
+}
+
+::-webkit-scrollbar-thumb/*滑块*/
+{
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.2);
+}
+
+::-webkit-scrollbar-thumb:hover/*滑块效果*/
+{
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.4);
+}
+
+.border-1 {
+    border: 1px solid #ccccff;
+}
+
+
+/* login.html begin */
+#login-top-div {
+    background-color: #333333;
+    overflow-y: hidden;
+}
+
+#login-bottom-div {
+    background-color: #269abc;
+    overflow-y: hidden;
+}
+
+#login-top-div div, #login-bottom-div div {
+    position: relative;
+    background-color: white;
+}
+
+#login-form-div {
+    position: absolute;
+    min-height: 70%;
+    min-width: 30%;
+    background-color: #ffffff;
+    border-radius: 4px;
+}
+
+#login-form-div form {
+    border: 0px solid red;
+    margin: 0 auto;
+    width: 90%;
+}
+
+.login-logo-div {
+    text-align: center;
+    font-size: 24px;
+    height: 56px;
+    margin-bottom: 40px;
+    margin-top: 20px;
+}
+
+.login-error-msg-label {
+    color: red;
+}
+
+.login-form-item-div {
+    margin: 20px auto;
+    width: 90%;
+}
+
+.login-form-item-div div {
+    height: 44px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.login-form-item-input {
+    height: 44px;
+    border-radius: 2px;
+    width: 90%;
+    font-size: 16px;
+    border: 1px solid #333333;
+    padding: 0 15px;
+}
+
+.login-form-item-input:focus {
+    border: 1px solid blue;
+}
+
+#login-login-btn-a {
+    height: 30px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    width: 100%;
+    font-size: 18px;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+}
+
+#login-login-btn-a:hover {
+    background-color: #31b0d5;
+}
+
+#login-forgot-a {
+    color: #269abc;
+}
+
+#login-forgot-a:hover {
+    color: #ff4400;
+    text-decoration: none;
+}
+/* login.html end */
+
+
+/* index.html begin */
+.row {
+    max-width: 100%;
+}
+
+.bg-white {
+    background-color: white;
+}
+
+.bg-white-border {
+    background-color: white;
+    border: 1px solid #ccccff;
+}
+
+.bg-black {
+    background-color: #333333;
+}
+
+.row-margin-bottom {
+    margin-bottom: 10px;
+}
+
+.row-margin-bottom-10 {
+    margin-bottom: 10px;
+}
+
+.row-margin-bottom-20 {
+    margin-bottom: 20px;
+}
+
+.padding-20-div{
+    padding: 20px;
+}
+
+.padding-0-20-div {
+    padding: 0 20px;
+}
+
+.padding-5-20-div {
+    padding: 5px 20px;
+}
+
+.padding-10-20-div {
+    padding: 10px 20px;
+}
+
+.padding-20-10-div {
+    padding: 20px 10px;
+}
+
+.padding-15-div {
+    padding: 15px;
+}
+
+.padding-10-15-div {
+    padding: 10px 15px;
+}
+
+.padding-10-div {
+    padding: 10px;
+}
+
+.padding-10-5-div {
+    padding: 10px 5px;
+}
+
+.padding-20-5-div {
+    padding: 20px 5px;
+}
+
+#header-menu-ul > li > a {
+    color: #97dcef;
+}
+
+#header-menu-ul > li > a:hover {
+    text-decoration: none;
+}
+
+.header-title-div {
+    font-size: 16px;
+    padding: 5px 10px 10px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.header-title-padding-5-10-10-div {
+    font-size: 16px;
+    padding: 5px 10px 10px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.header-title-padding-15-10-10-div {
+    font-size: 16px;
+    padding: 15px 10px 10px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.header-title-div i, .header-title-padding-5-10-10-div i,
+.header-title-padding-15-10-10-div i {
+    padding: 3px;
+    background: #269abc none repeat scroll 0 0;
+    margin-right: 10px;
+}
+
+.data-list-div {
+    border: 0px solid #ccccff;
+    width: 95%;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+.data-list-border-1-div {
+    padding: 10px;
+    border: 1px solid #ccccff;
+    height: 400px
+}
+
+/* carousel */
+.orbit-bullets button {
+    background-color: white;
+    border-radius: 50%;
+    height: 0.6rem;
+    margin: 0.2rem;
+    width: 0.6rem;
+}
+.orbit-bullets button.is-active, .orbit-bullets button:hover {
+    background-color: transparent !important;
+    border: 2px solid white !important;
+    height: 0.8rem;
+    margin: 0.1rem;
+    width: 0.8rem;
+}
+
+.close-button:focus, .close-button:hover {
+    color: #ffffff !important;
+}
+/* index.html end */
+
+
+/* info.html begin */
+.bt-list-group {
+    margin-bottom: 20px;
+    padding-left: 0;
+}
+
+.bt-list-group-item:first-child {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.bt-list-group-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    display: block;
+    margin-bottom: -1px;
+    padding: 10px 15px;
+    position: relative;
+}
+.bt-list-group-item:last-child {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    margin-bottom: 0;
+}
+
+.accordion-title:focus, .accordion-title:hover {
+    background-color: #e5f3ff;
+    text-decoration: none;
+}
+
+.accordion-title {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 14px;
+}
+
+.bg-light-blue {
+    background-color: #ddeeff;
+}
+
+.bg-light-black {
+    background-color: #3c3f41;
+}
+
+/* info.html begin */
+.margin-05-0-0 {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+.margin-old-10 {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.margin-right-5 {
+    margin-right: 5px;
+}
+
+.article-list-div {
+    border-bottom: 1px dashed black;
+    width: 100%;
+    padding: 10px 24px;
+    margin-bottom: 10px;
+}
+/* info.html end */
+
+/* detail.html begin */
+
+.one-layer {
+    border: 1px solid #ccccff;
+    border-top: none;
+}
+
+.one-layer:first-child {
+    border-top: 1px solid #ccccff;
+}
+
+.one-layer:last-child {
+
+}
+
+.layer-top-div {
+    font-size: 12px;
+    padding: 5px 10px 10px;
+    border-bottom: 1px dashed #ccccff;
+}
+
+/* detail.html end */
+
+/* user-backend.html begin */
+.pagination .current:hover {
+    background: #14679e;
+}
+
+.pagination-a {
+    border: 1px solid gray;
+    min-width: 46px;
+    -webkit-border-radius:2px !important;
+    -moz-border-radius:2px !important;
+    border-radius:2px !important;
+}
+
+.button-a {
+    background-color: #1779ba;
+    border: 1px solid transparent;
+    border-radius: 0;
+    color: #fefefe;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 0.9rem;
+    line-height: 1;
+    margin: 0 0 1rem;
+    padding: 0.5em;
+    text-align: center;
+    transition: background-color 0.25s ease-out 0s, color 0.25s ease-out 0s;
+    vertical-align: middle;
+}
+
+.button-a:focus, .button-a:hover {
+    background: #14679e;
+    color: #fefefe;
+}
+
+/* user-backend.html end */

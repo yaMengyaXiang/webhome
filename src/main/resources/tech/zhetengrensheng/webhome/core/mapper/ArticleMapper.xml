@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="tech.zhetengrensheng.webhome.core.dao.ArticleDao">
+
+    <resultMap id="BaseResultMap" type="tech.zhetengrensheng.webhome.core.entity.Article">
+        <id column="article_id" property="articleId" jdbcType="BIGINT"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="tag_id" property="tagId" jdbcType="INTEGER"/>
+        <result column="keyword" property="keyword" jdbcType="VARCHAR"/>
+        <result column="summary" property="summary" jdbcType="VARCHAR"/>
+        <result column="click_hit" property="clickHit" jdbcType="INTEGER"/>
+        <result column="reply_hit" property="replyHit" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="article_content" property="articleContent" jdbcType="LONGVARCHAR"/>
+        <result column="publish_date" jdbcType="TIMESTAMP" property="publishDate" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      article_id, title, tag_id, keyword, summary, click_hit, reply_hit, user_id, article_content, publish_date
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        where article_id = #{articleId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" parameterType="tech.zhetengrensheng.webhome.core.util.Page" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+      delete from article
+      where article_id = #{articleId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="tech.zhetengrensheng.webhome.core.entity.Article">
+        insert into article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">
+                article_id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="tagId != null">
+                tag_id,
+            </if>
+            <if test="keyword != null">
+                keyword,
+            </if>
+            <if test="summary != null">
+                summary,
+            </if>
+            <if test="clickHit != null">
+                click_hit,
+            </if>
+            <if test="replyHit != null">
+                reply_hit,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="publishDate != null">
+                publish_date,
+            </if>
+            <if test="articleContent != null">
+                article_content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">
+                #{articleId,jdbcType=BIGINT},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="tagId != null">
+                #{tagId,jdbcType=INTEGER},
+            </if>
+            <if test="keyword != null">
+                #{keyword,jdbcType=VARCHAR},
+            </if>
+            <if test="summary != null">
+                #{summary,jdbcType=VARCHAR},
+            </if>
+            <if test="clickHit != null">
+                #{clickHit,jdbcType=INTEGER},
+            </if>
+            <if test="replyHit != null">
+                #{replyHit,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="publishDate != null">
+                #{publishDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="articleContent != null">
+                #{articleContent,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="tech.zhetengrensheng.webhome.core.entity.Article">
+        update article
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="tagId != null">
+                tag_id = #{tagId,jdbcType=INTEGER},
+            </if>
+            <if test="keyword != null">
+                keyword = #{keyword,jdbcType=VARCHAR},
+            </if>
+            <if test="summary != null">
+                summary = #{summary,jdbcType=VARCHAR},
+            </if>
+            <if test="clickHit != null">
+                click_hit = #{clickHit,jdbcType=INTEGER},
+            </if>
+            <if test="replyHit != null">
+                reply_hit = #{replyHit,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="publishDate != null">
+                publish_date = #{publishDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="articleContent != null">
+                article_content = #{articleContent,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where article_id = #{articleId,jdbcType=BIGINT}
+    </update>
+
+</mapper>
