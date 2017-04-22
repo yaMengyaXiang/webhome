@@ -184,13 +184,18 @@ public class PaginationInterceptor implements Interceptor {
 
             for (Map.Entry<String, Object> entry : conditions.entrySet()){
 
-                sb.append(" and ").append(entry.getKey()).append(" = ");
-
                 Object value = entry.getValue();
-                if (value instanceof Number) {
-                    sb.append(value);
+
+                if (null == value) {
+                    sb.append(" and ").append(entry.getKey()).append(" is ");
+                    sb.append("null");
                 } else {
-                    sb.append("'").append(value).append("'");
+                    sb.append(" and ").append(entry.getKey()).append(" = ");
+                    if (value instanceof Number) {
+                        sb.append(value);
+                    } else {
+                        sb.append("'").append(value).append("'");
+                    }
                 }
 
             }

@@ -112,11 +112,11 @@ var common = {
             return;
         }
 
-        idsToDelete = new Array($checkbox.length);
+        common.idsToDelete = new Array($checkbox.length);
         var j = 0;
         $checkbox.each(function() {
             var id = $(this).val();
-            idsToDelete[j++] = id;
+            common.idsToDelete[j++] = id;
         });
 
         // 触发点击
@@ -127,7 +127,7 @@ var common = {
         var url = $(btnObj).attr("url");
 
         var param = {
-            "ids": idsToDelete,
+            "ids": common.idsToDelete,
         };
 
         $.post(url, param, function(data) {

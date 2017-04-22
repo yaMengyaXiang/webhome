@@ -58,7 +58,7 @@
                 <li>
                     <a href="#">我的折腾</a>
                 </li>
-                <c:if test="${empty user}">
+                <c:if test="${empty currentLoginUser}">
                     <li>
                         <a id="index-to-login" href="javascript:void(0);">登录</a>
                     </li>
@@ -66,9 +66,9 @@
                         <a href="#">注册</a>
                     </li>
                 </c:if>
-                <c:if test="${!empty user}">
+                <c:if test="${!empty currentLoginUser}">
                     <li>
-                        <a id="index-to-my-info" href="javascript:void(0);">${user.username}</a>
+                        <a id="index-to-my-info" href="javascript:void(0);">${currentLoginUser.username}</a>
                     </li>
                 </c:if>
                 <li>

@@ -77,7 +77,7 @@
                                     </a>
                                 </li>
                                 <li class="bt-list-group-item">
-                                    <a href="javascript:void(0);" action="${pageContext.request.contextPath}/user/toMyArticles.action">
+                                    <a id="toMyArticles" href="javascript:void(0);" action="${pageContext.request.contextPath}/user/toMyArticles.action">
                                         <i class="fa fa-list-alt"></i>
                                         我的文章
                                     </a>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tech.zhetengrensheng.webhome.core.dao.CommentDao">
+
+    <resultMap id="BaseResultMap" type="tech.zhetengrensheng.webhome.core.entity.Comment">
+        <id column="comment_id" property="commentId" jdbcType="BIGINT"/>
+        <result column="comment_date" property="commentDate" jdbcType="TIMESTAMP"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="article_id" property="articleId" jdbcType="BIGINT"/>
+        <result column="comment_parent_id" property="commentParentId" jdbcType="BIGINT"/>
+        <result column="comment_num" property="commentNum" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="ResultMapWithBLOBs" type="tech.zhetengrensheng.webhome.core.entity.Comment" extends="BaseResultMap">
+        <result column="comment_content" property="commentContent" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    comment_id, comment_date, user_id, article_id, comment_parent_id, comment_num
+    </sql>
+
+    <sql id="Blob_Column_List">
+    comment_content
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from comment
+        where comment_id = #{commentId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectDirectComments" parameterType="tech.zhetengrensheng.webhome.core.util.Page" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from comment
+    </select>
+
+    <select id="selectSubComments" parameterType="tech.zhetengrensheng.webhome.core.util.Page" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from comment
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from comment
+        where comment_id = #{commentId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="tech.zhetengrensheng.webhome.core.entity.Comment">
+        insert into comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="commentId != null">
+                comment_id,
+            </if>
+            <if test="commentDate != null">
+                comment_date,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="articleId != null">
+                article_id,
+            </if>
+            <if test="commentParentId != null">
+                comment_parent_id,
+            </if>
+            <if test="commentNum != null">
+                comment_num,
+            </if>
+            <if test="commentContent != null">
+                comment_content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="commentId != null">
+                #{commentId,jdbcType=BIGINT},
+            </if>
+            <if test="commentDate != null">
+                #{commentDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="articleId != null">
+                #{articleId,jdbcType=BIGINT},
+            </if>
+            <if test="commentParentId != null">
+                #{commentParentId,jdbcType=BIGINT},
+            </if>
+            <if test="commentNum != null">
+                #{commentNum,jdbcType=VARCHAR},
+            </if>
+            <if test="commentContent != null">
+                #{commentContent,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="tech.zhetengrensheng.webhome.core.entity.Comment">
+        update comment
+        <set>
+            <if test="commentDate != null">
+                comment_date = #{commentDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="commentNum != null">
+                comment_num = #{commentNum,jdbcType=VARCHAR},
+            </if>
+            <if test="articleId != null">
+                article_id = #{articleId,jdbcType=BIGINT},
+            </if>
+            <if test="commentParentId != null">
+                comment_parent_id = #{commentParentId,jdbcType=BIGINT},
+            </if>
+            <if test="commentContent != null">
+                comment_content = #{commentContent,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where comment_id = #{commentId,jdbcType=BIGINT}
+    </update>
+
+</mapper>

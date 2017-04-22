@@ -21,6 +21,8 @@ public class Page<T> {
 
 	private List<T> results; // 存放的数据
 
+	private List<Integer> pageNums;	// 分页按钮
+
 	private Map<String, Object> conditions;	// 存放查询的条件，key -- 字段名，value -- 字段值
 
 	public Page(int currentPage) {
@@ -51,6 +53,14 @@ public class Page<T> {
 			this.currentPage = 1;
 			this.startIndex = 0;
 		}
+	}
+
+	public List<Integer> getPageNums() {
+		return pageNums;
+	}
+
+	public void setPageNums(List<Integer> pageNums) {
+		this.pageNums = pageNums;
 	}
 
 	public Map<String, Object> getConditions() {

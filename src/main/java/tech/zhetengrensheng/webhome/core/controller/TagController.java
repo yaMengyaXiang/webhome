@@ -41,34 +41,34 @@ public class TagController {
 
         HttpSession session = request.getSession(false);
         try {
-            User user = (User) session.getAttribute("user");
+            User user = (User) session.getAttribute("currentLoginUser");
             tag.setUserId(user.getUserId());
+
+            if (tag != null && !StringUtils.isEmpty(tag.getTagName())) {
+
+                try {
+                    if (tag.getTagId() != null) {
+                        // update
+                        tagService.update(tag);
+                    } else {
+                        // save
+                        tagService.insert(tag);
+                    }
+
+                    jo.put("success", "true");
+
+                 } catch (Exception e){
+                    jo.put("success", "false");
+                 }
+
+            } else {
+                jo.put("success", "false");
+            }
         } catch (Exception e) {
             // 未登录？
             jo.put("success", "false");
-            return jo.toString();
         }
 
-        if (tag != null && !StringUtils.isEmpty(tag.getTagName())) {
-
-            try {
-                if (tag.getTagId() != null) {
-                    // update
-                    tagService.update(tag);
-                    jo.put("success", "true");
-                } else {
-                    // save
-                    tagService.insert(tag);
-                    jo.put("success", "true");
-
-                }
-             } catch (Exception e){
-                jo.put("success", "false");
-             }
-
-        } else {
-            jo.put("success", "false");
-        }
 
         return jo.toString();
     }

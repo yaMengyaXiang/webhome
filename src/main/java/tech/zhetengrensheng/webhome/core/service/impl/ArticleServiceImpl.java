@@ -27,6 +27,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
+    public int deleteTags(Long[] articleIds) {
+        return articleDao.deleteTags(articleIds);
+    }
+
+    @Override
+    @Transactional
     public int insert(Article record) {
         return articleDao.insert(record);
     }
@@ -45,5 +51,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<Article> selectAll(Page<Article> page) {
         return articleDao.selectAll(page);
+    }
+
+    @Override
+    public List<Article> selectArticles(Page<Article> page) {
+        return articleDao.selectArticles(page);
     }
 }

@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/common.js"></script>
 
@@ -34,15 +35,23 @@
             return;
         }
 
-        var checkboxValue = $checkedObj.val();
+        var id = $checkedObj.val();
 
         //TODO 请求后台获取该文章内容，并跳转到编辑界面
+        var url = "${pageContext.request.contextPath}/article/getArticleById.action";
+        var param = {
+            "articleId": id
+        };
+
+        $.post(url, param, function (data) {
+            $("#mainContent").html(data);
+        });
 
     }
 
     function deleteClickToSubmit(btnObj) {
 
-        common.deleteClickToSubmit(btnObj, "toMyTags");
+        common.deleteClickToSubmit(btnObj, "toMyArticles");
 
     }
 
@@ -78,13 +87,17 @@
                             <input class="margin-05-0-0" type="checkbox" name="articleId" value="${article.articleId}">
                         </td>
                         <td>${vs.count}</td>
-                        <td title="${article.title}">${article.title}</td>
+                        <td title="${article.title}">
+                            <a target="_blank" href="${pageContext.request.contextPath}/article/showArticleDetail.action?articleId=${article.articleId}">${article.title}</a>
+                        </td>
                         <td title="${article.tagId}">
                             <c:forEach items="${tags}" var="tag">
                                 <c:if test="${article.tagId == tag.tagId}">${tag.tagName}</c:if>
                             </c:forEach>
                         </td>
-                        <td title="${article.publishDate}">${article.publishDate}</td>
+                        <td title="${article.publishDate}">
+                            <fmt:formatDate value="${article.publishDate}" type="both"></fmt:formatDate>
+                        </td>
                         <td title="${article.keyword}">${article.keyword}</td>
                     </tr>
                 </c:forEach>
@@ -114,11 +127,11 @@
                                 </a>
 
                                 <div class="accordion-content" data-tab-content>
-                                    <form id="deleteTagForm">
+                                    <form id="deleteForm">
                                         <label style="font-size: 16px; color: red;">确定要删除所选文章吗 ?</label>
                                         <div style="width: 100%; text-align: right;">
                                             <a href="javascript:void(0);" onclick="common.cancel('deleteModal')" class="button" style="margin-bottom: 0;" >取消</a>
-                                            <a url="${pageContext.request.contextPath}/tag/deleteTags.action"
+                                            <a url="${pageContext.request.contextPath}/article/deleteArticles.action"
                                                href="javascript:void(0);" onclick="deleteClickToSubmit(this)" class="button" style="margin-bottom: 0;" >确定</a>
                                         </div>
                                     </form>
@@ -135,33 +148,33 @@
 
 
                 <div class="medium-6 columns text-center">
-                    <c:if test="${!empty pageTags.results}">
+                    <c:if test="${!empty pageArticles.results}">
                         <ul class="pagination" role="pagination">
 
                             <li>
-                                <a <c:if test="${pageTags.currentPage - 1 == 0}">style="cursor: not-allowed;color: #cacaca; border: 1px solid #cacaca;"</c:if>
+                                <a <c:if test="${pageArticles.currentPage - 1 == 0}">style="cursor: not-allowed;color: #cacaca; border: 1px solid #cacaca;"</c:if>
                                    class="pagination-a"
-                                   url="${pageContext.request.contextPath}/user/toMyTags.action?pageNo=${pageTags.currentPage-1}"
+                                   url="${pageContext.request.contextPath}/user/toMyArticles.action?pageNo=${pageArticles.currentPage-1}"
                                    href="javascript:void(0);"
-                                   onclick="common.preAndNextPage(this, ${pageTags.currentPage-1})">&lt;&lt;</a>
+                                   onclick="common.preAndNextPage(this, ${pageArticles.currentPage-1})">&lt;&lt;</a>
                             </li>
 
                             <c:forEach items="${pageNums}" var="pageNum">
                                 <li>
-                                    <a <c:if test="${pageNum == pageTags.currentPage}">style="background: #1779ba none repeat scroll 0 0;color: #fefefe;cursor: default;" </c:if>
+                                    <a <c:if test="${pageNum == pageArticles.currentPage}">style="background: #1779ba none repeat scroll 0 0;color: #fefefe;cursor: default;" </c:if>
                                        class="pagination-a"
-                                       url="${pageContext.request.contextPath}/user/toMyTags.action?pageNo=${pageNum}"
+                                       url="${pageContext.request.contextPath}/user/toMyArticles.action?pageNo=${pageNum}"
                                        href="javascript:void(0);"
                                        onclick="common.preAndNextPage(this, ${pageNum})">${pageNum}</a>
                                 </li>
                             </c:forEach>
 
                             <li>
-                                <a <c:if test="${pageTags.currentPage + 1 > pageTags.totalPageNum}">style="cursor: not-allowed;color: #cacaca; border: 1px solid #cacaca;"</c:if>
+                                <a <c:if test="${pageArticles.currentPage + 1 > pageArticles.totalPageNum}">style="cursor: not-allowed;color: #cacaca; border: 1px solid #cacaca;"</c:if>
                                    class="pagination-a"
-                                   url="${pageContext.request.contextPath}/user/toMyTags.action?pageNo=${pageTags.currentPage+1}"
+                                   url="${pageContext.request.contextPath}/user/toMyArticles.action?pageNo=${pageArticles.currentPage+1}"
                                    href="javascript:void(0);"
-                                   onclick="common.preAndNextPage(this, ${pageTags.currentPage+1})">&gt;&gt;</a>
+                                   onclick="common.preAndNextPage(this, ${pageArticles.currentPage+1})">&gt;&gt;</a>
                             </li>
 
                         </ul>

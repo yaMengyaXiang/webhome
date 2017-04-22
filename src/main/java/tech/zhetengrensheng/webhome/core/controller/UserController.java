@@ -58,6 +58,28 @@ public class UserController {
         return jo.toString();
     }
 
+
+    @RequestMapping("/getCurrentUserId.action")
+    @ResponseBody
+    public String getCurrentUserId(HttpServletRequest request) {
+
+        JSONObject jo = new JSONObject();
+
+        try {
+            HttpSession session = request.getSession(false);
+            User user = (User) session.getAttribute("currentLoginUser");
+
+            jo.put("userId", user.getUserId() + "");
+
+        } catch (Exception e) {
+            jo.put("userId", "null");
+
+        }
+
+        return jo.toString();
+    }
+
+
     @RequestMapping("/toLogin.action")
     public String toLogin(HttpServletRequest request) {
 
@@ -93,7 +115,7 @@ public class UserController {
             // 已经可以登录了，移除fromUri
             session.removeAttribute("fromUri");
             // 放入session，并设置生命周期
-            session.setAttribute("user", user);
+            session.setAttribute("currentLoginUser", user);
             // 一小时
             session.setMaxInactiveInterval(1 * 60 * 60);
 
@@ -131,7 +153,7 @@ public class UserController {
         }
 
         HttpSession session = request.getSession(false);
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("currentLoginUser");
 
         Page<Tag> pageTags = new Page<Tag>(pageNo);
 
@@ -160,7 +182,7 @@ public class UserController {
         }
 
         HttpSession session = request.getSession(false);
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("currentLoginUser");
 
         Page<Article> pageArticles = new Page<Article>(pageNo);
 
@@ -169,12 +191,15 @@ public class UserController {
 
         pageArticles.setConditions(conditions);
 
-        List<Article> articles = articleService.selectAll(pageArticles);
+        List<Article> articles = articleService.selectArticles(pageArticles);
 
         pageArticles.setResults(articles);
 
         List<Integer> pageNums = PageNumberGenerator.generator(pageArticles.getCurrentPage(), pageArticles.getTotalPageNum());
 
+        List<Tag> tags = tagService.queryAll(user.getUserId());
+
+        request.setAttribute("tags", tags);
         request.setAttribute("pageArticles", pageArticles);
         request.setAttribute("pageNums", pageNums);
 
@@ -185,7 +210,7 @@ public class UserController {
     public String toWriteArticle(HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("currentLoginUser");
 
         List<Tag> tags = tagService.queryAll(user.getUserId());
 

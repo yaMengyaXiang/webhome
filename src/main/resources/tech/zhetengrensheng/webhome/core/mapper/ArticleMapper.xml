@@ -14,10 +14,11 @@
         <result column="user_id" property="userId" jdbcType="INTEGER"/>
         <result column="article_content" property="articleContent" jdbcType="LONGVARCHAR"/>
         <result column="publish_date" jdbcType="TIMESTAMP" property="publishDate" />
+        <result column="edit_date" jdbcType="TIMESTAMP" property="editDate" />
     </resultMap>
 
     <sql id="Base_Column_List">
-      article_id, title, tag_id, keyword, summary, click_hit, reply_hit, user_id, article_content, publish_date
+      article_id, title, tag_id, keyword, summary, click_hit, reply_hit, user_id, article_content, publish_date, edit_date
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
@@ -33,9 +34,24 @@
         from article
     </select>
 
+    <select id="selectArticles" parameterType="tech.zhetengrensheng.webhome.core.util.Page" resultMap="BaseResultMap">
+        select article_id, title, tag_id, keyword, user_id, publish_date
+        from article
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
       delete from article
       where article_id = #{articleId,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteTags" parameterType="java.lang.Long">
+        delete from article
+        where article_id in
+         (
+            <foreach collection="array" item="articleId" separator=",">
+                ${articleId}
+            </foreach>
+         )
     </delete>
 
     <insert id="insert" parameterType="tech.zhetengrensheng.webhome.core.entity.Article">
@@ -67,6 +83,9 @@
             </if>
             <if test="publishDate != null">
                 publish_date,
+            </if>
+            <if test="editDate != null">
+                edit_date,
             </if>
             <if test="articleContent != null">
                 article_content,
@@ -100,6 +119,9 @@
             <if test="publishDate != null">
                 #{publishDate,jdbcType=TIMESTAMP},
             </if>
+            <if test="editDate != null">
+                #{editDate,jdbcType=TIMESTAMP},
+            </if>
             <if test="articleContent != null">
                 #{articleContent,jdbcType=LONGVARCHAR},
             </if>
@@ -132,6 +154,9 @@
             </if>
             <if test="publishDate != null">
                 publish_date = #{publishDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="editDate != null">
+                edit_date = #{editDate,jdbcType=TIMESTAMP},
             </if>
             <if test="articleContent != null">
                 article_content = #{articleContent,jdbcType=LONGVARCHAR},

@@ -28,6 +28,16 @@ public class Article implements Serializable {
 
     private Date publishDate;
 
+    private Date editDate;
+
+    public Date getEditDate() {
+        return editDate;
+    }
+
+    public void setEditDate(Date editDate) {
+        this.editDate = editDate;
+    }
+
     public Date getPublishDate() {
         return publishDate;
     }
