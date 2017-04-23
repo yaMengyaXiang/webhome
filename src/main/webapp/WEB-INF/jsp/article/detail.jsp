@@ -28,16 +28,16 @@
                 // 获取当前登录用户的id
                 $.post(getCurrentUserIdUrl, null, function (data) {
                     var json = jQuery.parseJSON(data);
-                    if (json.userId == "null") {
-                        alert("您还未登录呢");
+
+                    var userId = json.userId;
+
+                    if (userId == "null") {
+                        alert("亲，您还未登录呢");
+
                     } else {
-                        var userId = json.userId;
-                        alert(userId);
 
                         var url = $("#publishCmtBtn").attr("url");
-
                         var comemntContent = editor.$txt.html();
-
                         var articleId = $("#articleId").val();
 
                         var param = {
@@ -58,11 +58,12 @@
                             }
 
                         });
-
                     }
+
                 });
 
             });
+
 
         });
 
@@ -75,21 +76,6 @@
             }
 
             window.location.href = url;
-
-        }
-
-        function showSubComment(subCommentSpanObj) {
-            var subCommentDiv = $(subCommentSpanObj).parent().next(".article-sub-comment");
-            subCommentDiv.slideToggle("normal", function () {
-                var replyBtn = $(subCommentSpanObj).children(":first-child");
-
-                if (replyBtn.text() == "收起回复") {
-                    replyBtn.text("回复");
-                } else {
-                    replyBtn.text("收起回复");
-                }
-                $(subCommentSpanObj).toggleClass("article-reply-bg-border", "article-reply");
-            });
 
         }
 
@@ -152,64 +138,8 @@
                 </div>
                 </c:if>
 
-                <%-- 其他楼层 --%>
-                <c:forEach items="${pageComments.results}" var="comment">
-                <div class="row">
-                    <div class="large-3 medium-3 columns left-avatar">
-                        <div class="user-avatar">
-                            <img src="${pageContext.request.contextPath}/static/image/01.jpg" height="95%" width="95%" class="thumbnail">
-                        </div>
-                        <div class="user-name">
-                            <label>${comment.user.username}</label>
-                        </div>
-                    </div>
-                    <div class="large-9 medium-9 columns right-content">
-                        <div class="padding-20-div">
-                            <div class="article-content">
-                                ${comment.commentContent}
-                            </div>
-                            <div class="article-publish-date" style="margin-bottom: 10px;">
-                                <a href="#" class="only-see-this-author">只看该作者</a>
-                                ${comment.commentNum}楼 | 发表于：<fmt:formatDate value="${comment.commentDate}" type="both"></fmt:formatDate>
-                                <span onclick="showSubComment(this)" class="text-center article-reply">
-                                    <a href="javascript:void(0);">回复(10)</a>
-                                </span>
-                            </div>
-                            <div class="article-sub-comment" style="min-height: 100px;">
 
-
-                                <div style="width: 90%; margin: 0 auto;">
-                                    <div class="" id="subCommentEditorDiv${comment.commentNum}" style="min-height: 50px;"></div>
-                                    <script type="text/javascript">
-                                        var id = "subCommentEditorDiv${comment.commentNum}";
-                                        var subCommentEditor = new wangEditor(id);
-
-                                        // 关闭菜单栏fixed
-                                        subCommentEditor.config.menuFixed = false;
-
-                                        subCommentEditor.config.menus = [
-                                            'bold',
-                                            'italic',
-                                            'quote',
-                                            'fontfamily',
-                                            'fontsize',
-                                            '|',
-                                            'emotion',
-                                            'img',
-                                            'insertcode',
-                                            'undo',
-                                            'redo'
-                                        ];
-
-                                        subCommentEditor.create();
-                                    </script>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                </c:forEach>
+                <%@include file="/WEB-INF/jsp/comment/all-comments.jsp"%>
 
             </div>
 

@@ -27,6 +27,20 @@ public interface CommentDao {
      */
     List<Comment> selectSubComments(Page<Comment> page);
 
+    /**
+     * 获取楼中楼回复的数量，
+     * @param commentParentId 表示某个回复的id
+     * @return
+     */
+    Integer selectSubCommentsCount(Long commentParentId);
+
+    /**
+     * 查询该回复处于哪一楼
+     * @param commentId
+     * @return
+     */
+    String selectCommentNum(Long commentId);
+
     int update(Comment record);
 
 }

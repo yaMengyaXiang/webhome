@@ -175,6 +175,9 @@ public class ArticleController {
                 User cmtUser = userService.selectByPrimaryKey(cmt.getUserId());
                 cmt.setUser(cmtUser);
 
+                Integer count = commentService.selectSubCommentsCount(cmt.getCommentId());
+                cmt.setSubCommentCount(count);
+
                 Page<Comment> pageSubComments = new Page<Comment>(1);
                 Map<String, Object> subConditions = new HashMap<String, Object>();
 
@@ -183,7 +186,7 @@ public class ArticleController {
 
                 pageSubComments.setConditions(subConditions);
 
-                // 也是只有userId，没有user的其他信息
+                // 也是只有userId，没有user的其他信息，这是楼中楼的回复
                 List<Comment> subComments = commentService.selectSubComments(pageSubComments);
                 if (subComments != null && !subComments.isEmpty()) {
                     for (Comment subCmt : subComments) {
@@ -205,6 +208,7 @@ public class ArticleController {
         pageComments.setResults(comments);
 
         List<Integer> pageNums = PageNumberGenerator.generator(pageComments.getCurrentPage(), pageComments.getTotalPageNum());
+
 
         request.setAttribute("keywords", keywords);
         request.setAttribute("article", article);

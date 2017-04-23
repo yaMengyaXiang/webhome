@@ -35,6 +35,9 @@ body {
 .border-1 {
     border: 1px solid #ccccff;
 }
+.border-none {
+    border: none !important;
+}
 
 
 /* login.html begin */
@@ -169,6 +172,10 @@ body {
 
 .padding-20-20-20-0-div{
     padding: 20px 20px 20px 0;
+}
+
+.padding-20-20-10-20-div{
+    padding: 20px 20px 10px 20px;
 }
 
 
@@ -338,9 +345,29 @@ body {
     margin: 0.5rem 0;
 }
 
+.margin-bottom-0 {
+    margin-bottom: 0px;
+}
+
+.margin-bottom-5 {
+    margin-bottom: 5px;
+}
+
+.margin-bottom-1rem {
+    margin-bottom: 1rem;
+}
+
+.margin-bottom-06rem {
+    margin-bottom: 0.6rem;
+}
+
 .margin-old-10 {
     margin-left: 10px;
     margin-right: 10px;
+}
+
+.margin-1-0 {
+    margin: 1px 0;
 }
 
 .margin-right-5 {
@@ -426,7 +453,7 @@ body {
 }
 
 .article-publish-date {
-    font-size:13px;
+    font-size:12px;
     color: #767676;
     text-align: right;
 }
@@ -441,19 +468,70 @@ body {
     cursor: pointer;
 
 }
-.article-reply-bg-border {
-    margin-left: 8px;
-    padding: 5px 12px 13px 12px;
-    background: #f9f9f9;
-    border: 1px solid #ccccff;
-    border-bottom: none;
-    cursor: pointer;
-}
 
 .article-sub-comment {
-    background: #f9f9f9;
-    border: 1px solid #ccccff;
-    display: none;
+    /*background: #f9f9f9;*/
+    /*border: 1px solid #ccccff;*/
+    display: block;
+}
+
+.my-accordion-title {
+    font-size: 12px;
+    padding: 0.8rem 1rem !important;
+}
+
+.sub-comment-reply-editor {
+    /*padding: 0 1rem 5px;*/
+}
+
+.my-accordion-content {
+    /*padding: 1rem 1rem 0 1rem !important;*/
+    padding: 0.8rem 1rem !important;
+}
+
+.accordion-content > .accordion:not(:first-child) .my-accordion-title {
+    /*border-top: 0px solid #e6e6e6 !important;*/
+}
+
+.pagination-accordion .my-accordion-content {
+    /*border-top: 0px solid #e6e6e6 !important;*/
+}
+
+.sub-comment-reply-accordion .my-accordion-content {
+    /*border-top: 0px solid #e6e6e6 !important;*/
+}
+
+.my-bt-list-group {
+    margin-bottom: 10px;
+}
+
+.my-bt-list-group-item {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.sub-comment-reply-span {
+    cursor: pointer;
+    font-size: 12px;
+    padding: 5px;
+    border: 1px solid gray;
+    border-radius: 2px;
+}
+
+.sub-comment-reply-span > a {
+    color: #333333;
+}
+
+.sub-comment-reply-span > a:hover {
+    color: #269abc;
+}
+
+.sub-comment-reply-span:hover {
+    border: 1px solid #5bc0de;
+}
+
+.border-top-1 {
+    border-top: 1px solid #e6e6e6;
 }
 
 .small-left-avatar {

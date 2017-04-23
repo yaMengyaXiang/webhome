@@ -7,12 +7,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import tech.zhetengrensheng.webhome.core.entity.Article;
 import tech.zhetengrensheng.webhome.core.entity.Comment;
+import tech.zhetengrensheng.webhome.core.entity.User;
 import tech.zhetengrensheng.webhome.core.service.ArticleService;
 import tech.zhetengrensheng.webhome.core.service.CommentService;
+import tech.zhetengrensheng.webhome.core.service.UserService;
+import tech.zhetengrensheng.webhome.core.util.Page;
+import tech.zhetengrensheng.webhome.core.util.PageNumberGenerator;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Long on 2017-04-22.
@@ -27,6 +34,8 @@ public class CommentController {
     @Resource
     private ArticleService articleService;
 
+    @Resource
+    private UserService userService;
 
     @RequestMapping("/publishComment.action")
     @ResponseBody
@@ -65,6 +74,84 @@ public class CommentController {
         }
 
         return jo.toString();
+    }
+
+
+    @RequestMapping("/publishSubComment.action")
+    @ResponseBody
+    public String publishSubComment(Comment comment, HttpServletRequest request) {
+
+        if (comment != null && comment.getCommentParentId() != null && comment.getArticleId() != null) {
+
+            Long commentParentId = comment.getCommentParentId();
+
+            // 这是几楼
+            String commentNum = commentService.selectCommentNum(commentParentId);
+
+            // 查询该楼层的回复数
+            Integer count = commentService.selectSubCommentsCount(commentParentId);
+            String newCmtNum = commentNum + "-" + (count + 1);
+
+            comment.setCommentNum(newCmtNum);
+            Date commentDate = new Date();
+            comment.setCommentDate(commentDate);
+
+            Long articleId = comment.getArticleId();
+
+            Article article = articleService.selectByPrimaryKey(articleId);
+            article.setReplyHit(article.getReplyHit() + 1);
+
+            articleService.update(article);
+            commentService.insert(comment);
+
+            // 要经过视图渲染
+            return "redirect:/comment/showComment.action?articleId=" + articleId + "&commentId=" + commentParentId;
+        }
+
+        return null;
+
+    }
+
+
+    @RequestMapping("/showComment.action")
+    public String showComment(Comment comment, HttpServletRequest request) {
+
+        Long articleId = comment.getArticleId();
+        Long commentId = comment.getCommentId();
+
+        Page<Comment> pageSubComments = new Page<Comment>(1);
+        Map<String, Object> subConditions = new HashMap<String, Object>();
+
+        subConditions.put("articleId", articleId);
+        subConditions.put("commentParentId", commentId);
+
+        pageSubComments.setConditions(subConditions);
+
+        // 也是只有userId，没有user的其他信息，这是楼中楼的回复
+        List<Comment> subComments = commentService.selectSubComments(pageSubComments);
+        if (subComments != null && !subComments.isEmpty()) {
+            for (Comment subCmt : subComments) {
+                User subCmtUser = userService.selectByPrimaryKey(subCmt.getUserId());
+                subCmt.setUser(subCmtUser);
+            }
+        }
+
+        pageSubComments.setResults(subComments);
+
+        List<Integer> subPageNums = PageNumberGenerator.generator(pageSubComments.getCurrentPage(), pageSubComments.getTotalPageNum());
+        pageSubComments.setPageNums(subPageNums);
+
+        Comment cmt = commentService.selectByPrimaryKey(commentId);
+
+        Integer count = commentService.selectSubCommentsCount(commentId);
+
+        cmt.setSubCommentCount(count);
+
+        cmt.setPageSubComments(pageSubComments);
+
+        request.setAttribute("cmt", cmt);
+
+        return "/comment/comment.jsp";
     }
 
 }

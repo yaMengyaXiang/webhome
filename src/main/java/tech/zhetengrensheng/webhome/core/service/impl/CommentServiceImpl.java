@@ -51,4 +51,14 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> selectSubComments(Page<Comment> page) {
         return commentDao.selectSubComments(page);
     }
+
+    @Override
+    public Integer selectSubCommentsCount(Long commentParentId) {
+        return commentDao.selectSubCommentsCount(commentParentId);
+    }
+
+    @Override
+    public String selectCommentNum(Long commentId) {
+        return commentDao.selectCommentNum(commentId);
+    }
 }
