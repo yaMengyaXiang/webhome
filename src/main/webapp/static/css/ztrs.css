@@ -5,32 +5,35 @@ body {
     background-color: #f9fafc;
 }
 
-::-webkit-scrollbar/*整体部分*/
+/*
+
+::-webkit-scrollbar!*整体部分*!
 {
     width: 10px;
     height:10px;
 }
 
-::-webkit-scrollbar-track/*滑动轨道*/
+::-webkit-scrollbar-track!*滑动轨道*!
 {
     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
     border-radius: 0px;
     background: rgba(0,0,0,0.1);
 }
 
-::-webkit-scrollbar-thumb/*滑块*/
+::-webkit-scrollbar-thumb!*滑块*!
 {
     border-radius: 5px;
     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
     background: rgba(0,0,0,0.2);
 }
 
-::-webkit-scrollbar-thumb:hover/*滑块效果*/
+::-webkit-scrollbar-thumb:hover!*滑块效果*!
 {
     border-radius: 5px;
     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
     background: rgba(0,0,0,0.4);
 }
+*/
 
 .border-1 {
     border: 1px solid #ccccff;
@@ -135,6 +138,21 @@ body {
 }
 /* login.html end */
 
+#right-menubar {
+    height: 450px;
+    position: absolute;
+    right: 10px;
+    width: 46px;
+    border: 1px solid red;
+}
+
+#left-menubar {
+    height: 450px;
+    position: absolute;
+    left: 10px;
+    width: 46px;
+    border: 1px solid red;
+}
 
 /* index.html begin */
 .row {
@@ -210,6 +228,11 @@ body {
 .padding-10-5-div {
     padding: 10px 5px;
 }
+
+.padding-10-7-div {
+    padding: 10px 7px;
+}
+
 
 .padding-5-div {
     padding: 5px;
@@ -309,6 +332,7 @@ body {
     margin-bottom: -1px;
     padding: 10px 15px;
     position: relative;
+    font-size: 13px;
 }
 .bt-list-group-item:last-child {
     border-bottom-left-radius: 4px;
@@ -429,12 +453,13 @@ body {
 }
 
 .article-title {
-    font-size: 17px;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: normal;
 }
 
 .article-content {
-    min-height: 250px;
+    margin-bottom: 50px;
+    min-height: 160px;
 }
 
 .article-click-reply-hit {
@@ -462,6 +487,10 @@ body {
     margin-right: 8px;
 }
 
+.delete-this-floor {
+    margin-right: 8px;
+}
+
 .article-reply {
     margin-left: 2px;
     padding: 5px 12px 12px 12px;
@@ -480,25 +509,9 @@ body {
     padding: 0.8rem 1rem !important;
 }
 
-.sub-comment-reply-editor {
-    /*padding: 0 1rem 5px;*/
-}
-
 .my-accordion-content {
     /*padding: 1rem 1rem 0 1rem !important;*/
     padding: 0.8rem 1rem !important;
-}
-
-.accordion-content > .accordion:not(:first-child) .my-accordion-title {
-    /*border-top: 0px solid #e6e6e6 !important;*/
-}
-
-.pagination-accordion .my-accordion-content {
-    /*border-top: 0px solid #e6e6e6 !important;*/
-}
-
-.sub-comment-reply-accordion .my-accordion-content {
-    /*border-top: 0px solid #e6e6e6 !important;*/
 }
 
 .my-bt-list-group {
@@ -530,9 +543,29 @@ body {
     border: 1px solid #5bc0de;
 }
 
+.font-size-12 {
+    font-size: 12px;
+}
+
 .border-top-1 {
     border-top: 1px solid #e6e6e6;
 }
+/*
+#publishCmtBtn {
+    background-color: #1779ba !important;
+    border: 1px solid transparent;
+    border-radius: 0;
+    color: #fefefe;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 0.9rem;
+    line-height: 1;
+    margin: 0 0 1rem;
+    padding: 0.85em 1em;
+    text-align: center;
+    transition: background-color 0.25s ease-out 0s, color 0.25s ease-out 0s;
+    vertical-align: middle;
+}*/
 
 .small-left-avatar {
     /*border: 1px solid #ccccff;*/

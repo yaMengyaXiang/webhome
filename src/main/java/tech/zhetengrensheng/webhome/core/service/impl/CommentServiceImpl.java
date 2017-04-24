@@ -61,4 +61,9 @@ public class CommentServiceImpl implements CommentService {
     public String selectCommentNum(Long commentId) {
         return commentDao.selectCommentNum(commentId);
     }
+
+    @Override
+    public Integer selectDirectCommentsCount(Long articleId) {
+        return commentDao.selectDirectCommentsCount(articleId);
+    }
 }

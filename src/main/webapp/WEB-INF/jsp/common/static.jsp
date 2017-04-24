@@ -18,6 +18,7 @@
 <%--<link rel="stylesheet" href="//cdn.bootcss.com/motion-ui/1.2.2/motion-ui.min.css" />--%>
 <%--<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">--%>
 <%--<link href="//cdn.bootcss.com/wangeditor/2.1.20/css/wangEditor.min.css" rel="stylesheet">--%>
+
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation-icons/3.0/foundation-icons.min.css">-->
 
 
@@ -26,8 +27,10 @@
 <script src="${pageContext.request.contextPath}/static/js/wangEditor.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/foundation.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/motion-ui.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/font-awesome.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/wangEditor.min.css">
 
 <script src="${pageContext.request.contextPath}/static/js/util.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/wangEditor-override.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/ztrs.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/wangEditor.min.css">

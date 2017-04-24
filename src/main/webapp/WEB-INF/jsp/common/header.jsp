@@ -38,6 +38,15 @@
             window.location.href = url;
 
         });
+
+        $("#index-to-relogin").unbind("click");
+        $("#index-to-relogin").bind("click", function () {
+
+            var url = "${pageContext.request.contextPath}/user/relogin.action";
+
+            window.location.href = url;
+
+        });
     });
 
 </script>
@@ -69,6 +78,9 @@
                 <c:if test="${!empty currentLoginUser}">
                     <li>
                         <a id="index-to-my-info" href="javascript:void(0);">${currentLoginUser.username}</a>
+                    </li>
+                    <li>
+                        <a id="index-to-relogin" href="javascript:void(0);">重新登录</a>
                     </li>
                 </c:if>
                 <li>

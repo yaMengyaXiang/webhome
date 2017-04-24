@@ -34,6 +34,13 @@ public interface CommentService {
      */
     String selectCommentNum(Long commentId);
 
+    /**
+     * 查看楼层的回复量，不包括楼中楼的回复量
+     * @param articleId
+     * @return
+     */
+    Integer selectDirectCommentsCount(Long articleId);
+
     int update(Comment record);
 
 }

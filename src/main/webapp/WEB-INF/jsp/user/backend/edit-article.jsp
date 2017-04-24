@@ -116,9 +116,6 @@
                     <script type="text/javascript">
                         var editor = new wangEditor("wang-editor");
 
-                        // 关闭菜单栏fixed
-                        editor.config.menuFixed = false;
-
                         editor.config.menus = [
                             'source',
                             '|',
@@ -154,9 +151,27 @@
                             'fullscreen'
                         ];
 
+                        // 关闭菜单栏fixed
+                        editor.config.menuFixed = false;
+
+                        // 上传图片
+                        editor.config.uploadImgUrl = '/upload';
+
+                        editor.config.emotions = {
+                            'default': {
+                                title: '默认',
+                                data: '${pageContext.request.contextPath}/static/emotions/emotions.data'
+                            }
+                        };
+
                         editor.create();
+
                         var articleContent = "${article.articleContent}";
                         editor.$txt.html(articleContent);
+
+                        // 自定义命令
+                        editor.customCommand = override.wangEditor.customCommand();
+
                     </script>
                 </div>
             </div>

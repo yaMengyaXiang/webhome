@@ -11,6 +11,7 @@ import tech.zhetengrensheng.webhome.core.entity.User;
 import tech.zhetengrensheng.webhome.core.service.ArticleService;
 import tech.zhetengrensheng.webhome.core.service.CommentService;
 import tech.zhetengrensheng.webhome.core.service.UserService;
+import tech.zhetengrensheng.webhome.core.util.Constants;
 import tech.zhetengrensheng.webhome.core.util.Page;
 import tech.zhetengrensheng.webhome.core.util.PageNumberGenerator;
 
@@ -49,11 +50,17 @@ public class CommentController {
 
                 comment.setCommentDate(new Date());
 
-                Article article = articleService.selectByPrimaryKey(comment.getArticleId());
+                Long articleId = comment.getArticleId();
+                // 直接回复量，不包括楼中楼回复量
+                Integer directCommentsCount = commentService.selectDirectCommentsCount(articleId);
+
+                Article article = articleService.selectByPrimaryKey(articleId);
+
                 Integer replyHit = article.getReplyHit();
+                // 总回复量+1
                 article.setReplyHit(replyHit + 1);
-                // 楼数 = 回复数 + 1，1楼显示文章内容
-                comment.setCommentNum(replyHit + 1 + 1 + "");
+                // 楼数 = 直接回复数 + 1 + 1，1楼显示文章内容，再+1是该回复所处的楼层数
+                comment.setCommentNum(directCommentsCount + 1 + 1 + "");
 
                 commentService.insert(comment);
                 articleService.update(article);
@@ -78,8 +85,7 @@ public class CommentController {
 
 
     @RequestMapping("/publishSubComment.action")
-    @ResponseBody
-    public String publishSubComment(Comment comment, HttpServletRequest request) {
+    public String publishSubComment(Comment comment) {
 
         if (comment != null && comment.getCommentParentId() != null && comment.getArticleId() != null) {
 
@@ -105,7 +111,7 @@ public class CommentController {
             commentService.insert(comment);
 
             // 要经过视图渲染
-            return "redirect:/comment/showComment.action?articleId=" + articleId + "&commentId=" + commentParentId;
+            return "forward:/comment/showComment.action?articleId=" + articleId + "&commentId=" + commentParentId;
         }
 
         return null;
@@ -114,18 +120,23 @@ public class CommentController {
 
 
     @RequestMapping("/showComment.action")
-    public String showComment(Comment comment, HttpServletRequest request) {
+    public String showComment(Comment comment, Integer subPageNo, HttpServletRequest request) {
+
+        if (subPageNo == null || subPageNo < 1) {
+            subPageNo = 1;
+        }
 
         Long articleId = comment.getArticleId();
         Long commentId = comment.getCommentId();
 
-        Page<Comment> pageSubComments = new Page<Comment>(1);
+        Page<Comment> pageSubComments = new Page<Comment>(subPageNo);
         Map<String, Object> subConditions = new HashMap<String, Object>();
 
         subConditions.put("articleId", articleId);
         subConditions.put("commentParentId", commentId);
 
         pageSubComments.setConditions(subConditions);
+        pageSubComments.setPageSize(Constants.SUB_PAGE_SIZE);
 
         // 也是只有userId，没有user的其他信息，这是楼中楼的回复
         List<Comment> subComments = commentService.selectSubComments(pageSubComments);

@@ -37,7 +37,7 @@
 
         var id = $checkedObj.val();
 
-        //TODO 请求后台获取该文章内容，并跳转到编辑界面
+        // 请求后台获取该文章内容，并跳转到编辑界面
         var url = "${pageContext.request.contextPath}/article/getArticleById.action";
         var param = {
             "articleId": id

@@ -12,7 +12,7 @@
     </resultMap>
 
     <resultMap id="ResultMapWithBLOBs" type="tech.zhetengrensheng.webhome.core.entity.Comment" extends="BaseResultMap">
-        <result column="comment_content" property="commentContent" jdbcType="LONGVARCHAR"/>
+        <result column="comment_content" property="commentContent" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -52,6 +52,12 @@
         select comment_num
         from comment
         where comment_id = #{commentId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectDirectCommentsCount" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        select count(1)
+        from comment
+        where article_id = #{articleId,jdbcType=BIGINT} and comment_parent_id is null
     </select>
 
     <select id="selectSubCommentsCount" parameterType="java.lang.Long" resultType="java.lang.Integer">
@@ -110,7 +116,7 @@
                 #{commentNum,jdbcType=VARCHAR},
             </if>
             <if test="commentContent != null">
-                #{commentContent,jdbcType=LONGVARCHAR},
+                #{commentContent,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -134,7 +140,7 @@
                 comment_parent_id = #{commentParentId,jdbcType=BIGINT},
             </if>
             <if test="commentContent != null">
-                comment_content = #{commentContent,jdbcType=LONGVARCHAR},
+                comment_content = #{commentContent,jdbcType=VARCHAR},
             </if>
         </set>
         where comment_id = #{commentId,jdbcType=BIGINT}

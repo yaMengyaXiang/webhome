@@ -14,6 +14,7 @@ import tech.zhetengrensheng.webhome.core.service.ArticleService;
 import tech.zhetengrensheng.webhome.core.service.CommentService;
 import tech.zhetengrensheng.webhome.core.service.TagService;
 import tech.zhetengrensheng.webhome.core.service.UserService;
+import tech.zhetengrensheng.webhome.core.util.Constants;
 import tech.zhetengrensheng.webhome.core.util.Page;
 import tech.zhetengrensheng.webhome.core.util.PageNumberGenerator;
 
@@ -185,6 +186,7 @@ public class ArticleController {
                 subConditions.put("commentParentId", cmt.getCommentId());
 
                 pageSubComments.setConditions(subConditions);
+                pageSubComments.setPageSize(Constants.SUB_PAGE_SIZE);
 
                 // 也是只有userId，没有user的其他信息，这是楼中楼的回复
                 List<Comment> subComments = commentService.selectSubComments(pageSubComments);

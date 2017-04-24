@@ -11,8 +11,13 @@ public interface Constants {
 	/**
 	 * 一页显示记录数量，10条记录
 	 */
-	public static final Integer PAGE_SIZE = 5;
-	
+	public static final Integer PAGE_SIZE = 10;
+
+	/**
+	 * 子分页，一页显示记录数，楼中楼回复中用到子分页
+	 */
+	public static final Integer SUB_PAGE_SIZE = 5;
+
 	/**
 	 * 分页按钮的最多数量，比如10表示10个按钮，第1页，第2页，...，第10页
 	 */

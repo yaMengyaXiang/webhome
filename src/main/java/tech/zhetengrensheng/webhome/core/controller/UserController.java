@@ -90,6 +90,16 @@ public class UserController {
 
     }
 
+    @RequestMapping("/relogin.action")
+    public String relogin(HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+        session.removeAttribute("currentLoginUser");
+
+        return "forward:/user/toLogin.action";
+//        return "forward:/login.jsp";
+    }
+
     @RequestMapping("/login.action")
     public String login(String username, String password, HttpServletRequest request) {
 
@@ -104,7 +114,7 @@ public class UserController {
             String nextUri = fromUri;
 
             // 点击登录按钮
-            if (!requestURI.contains("Login") && !requestURI.contains("login")) {
+            if (requestURI != null && !requestURI.contains("Login") && !requestURI.contains("login")) {
                 String rootName = "webhome";
                 int index = requestURI.indexOf(rootName);
 

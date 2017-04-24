@@ -86,10 +86,14 @@
 
     <%@include file="/WEB-INF/jsp/common/header.jsp"%>
 
-    <%@include file="/WEB-INF/jsp/common/menubar.jsp"%>
+    <%@include file="/WEB-INF/jsp/common/top-menubar.jsp"%>
 
-    <div class="hide-for-small-only" style="max-width: 85%; margin: 0.5rem auto;">
-        <div class="padding-10-5-div">
+    <%@include file="/WEB-INF/jsp/common/left-menubar.jsp"%>
+
+    <%@include file="/WEB-INF/jsp/common/right-menubar.jsp"%>
+
+    <div class="hide-for-small-only main-content" style="max-width: 85%; margin: 0.5rem auto;">
+        <div class="padding-10-7-div">
             <div class="layer padding-5-div">
 
                 <%-- 文章标题，点击量，回复量 --%>
@@ -97,9 +101,9 @@
                     <div class="large-3 medium-3 columns left-avatar-title text-center">
                         <div class="padding-5-0-div">
                             <label class="article-click-reply-hit">
-                                查看: <i style="color: #ff4400; font-style: normal;">${article.clickHit}</i>
+                                查看: <i title="${article.clickHit}" style="color: #ff4400; font-style: normal;">${article.clickHit}</i>
                                  |
-                                回复: <i style="color: #ff4400; font-style: normal;">${article.replyHit}</i>
+                                回复: <i title="${article.clickHit}" style="color: #ff4400; font-style: normal;">${article.replyHit}</i>
                             </label>
                         </div>
                     </div>
@@ -138,8 +142,9 @@
                 </div>
                 </c:if>
 
-
+                <c:if test="${!empty pageComments.results}">
                 <%@include file="/WEB-INF/jsp/comment/all-comments.jsp"%>
+                </c:if>
 
             </div>
 
@@ -187,10 +192,10 @@
                     <div class="" style="width: 90%; margin: 10px auto;">
                         <div style="height: 26px;">
                             <div class="medium-6 columns text-left">
-                                <label style="font-size: 17px; font-weight: bold;">走过路过，发表一下你的评论吧 !</label>
+                                <label style="font-size: 16px;">走过路过，发表一下你的评论吧 !</label>
                             </div>
                             <div class="medium-6 columns text-right">
-                                <label style="font-size: 17px; font-weight: bold; float: right;">亲，请记得文明用语哦 !</label>
+                                <label style="font-size: 16px;float: right;">亲，请记得文明用语哦 !</label>
                             </div>
                         </div>
                     </div>
@@ -203,8 +208,11 @@
                             editor.config.menuFixed = false;
 
                             editor.config.menus = [
+                                'source',
+                                '|',
                                 'bold',
                                 'italic',
+                                'eraser',
                                 'quote',
                                 'fontfamily',
                                 'fontsize',
@@ -224,12 +232,28 @@
                                 'fullscreen'
                             ];
 
+                            // 上传图片
+                            editor.config.uploadImgUrl = '/upload';
+
+                            editor.config.emotions = {
+                                'default': {
+                                    title: '默认',
+                                    data: '${pageContext.request.contextPath}/static/emotions/emotions.data'
+                                }
+                            };
+
                             editor.create();
+
+                            editor.$txt.html('<p><br></p>');
+
+                            // 自定义命令
+                            editor.customCommand = override.wangEditor.customCommand();
+
                         </script>
                     </div>
                     <div class="text-right" style="width: 90%; margin: 10px auto 0px;">
                         <a url="${pageContext.request.contextPath}/comment/publishComment.action"
-                           href="javascript:void(0);" id="publishCmtBtn" type="button" class="button">发表评论</a>
+                           href="javascript:void(0);" id="publishCmtBtn" class="button">发表评论</a>
                     </div>
                 </div>
 
@@ -239,9 +263,8 @@
         </div>
     </div>
 
-
     <div class="show-for-small-only" style="max-width: 98%; margin: 0.5rem auto;">
-        <div class="padding-10-5-div">
+        <div class="padding-10-7-div">
             <div class="layer padding-5-div">
 
                 <div class="row">

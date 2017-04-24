@@ -4,6 +4,7 @@ import tech.zhetengrensheng.webhome.core.entity.Comment;
 import tech.zhetengrensheng.webhome.core.util.Page;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CommentDao {
 
@@ -40,6 +41,13 @@ public interface CommentDao {
      * @return
      */
     String selectCommentNum(Long commentId);
+
+    /**
+     * 查看楼层的回复量，不包括楼中楼的回复量
+     * @param articleId
+     * @return
+     */
+    Integer selectDirectCommentsCount(Long articleId);
 
     int update(Comment record);
 

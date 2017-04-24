@@ -125,7 +125,7 @@
 
 <%@include file="/WEB-INF/jsp/common/header.jsp"%>
 
-<%@include file="/WEB-INF/jsp/common/menubar.jsp"%>
+<%@include file="/WEB-INF/jsp/common/top-menubar.jsp"%>
 
 
 <div class="row">

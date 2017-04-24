@@ -22,6 +22,11 @@
         });
 
         function scrollToTop() {
+            /*
+            $("html,body").animate({
+                scrollTop: top - 200
+            });
+             */
             var sTop = $(window).scrollTop();
             console.log(sTop);
 
@@ -44,7 +49,7 @@
 
     <%@include file="/WEB-INF/jsp/common/header.jsp"%>
 
-    <%@include file="/WEB-INF/jsp/common/menubar.jsp"%>
+    <%@include file="/WEB-INF/jsp/common/top-menubar.jsp"%>
 
     <!-- 最新资讯 最热折腾-->
     <div class="row row-margin-bottom">
