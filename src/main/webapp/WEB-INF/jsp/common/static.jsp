@@ -15,16 +15,19 @@
 <%--<link href="//cdn.bootcss.com/foundation/6.3.1/css/foundation.min.css" rel="stylesheet">--%>
 <%--<script src="//cdn.bootcss.com/wangeditor/2.1.20/js/wangEditor.min.js"></script>--%>
 
-<%--<link rel="stylesheet" href="//cdn.bootcss.com/motion-ui/1.2.2/motion-ui.min.css" />--%>
+<%--<link href="//cdn.bootcss.com/motion-ui/1.2.2/motion-ui.min.css" rel="stylesheet"/>--%>
 <%--<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">--%>
 <%--<link href="//cdn.bootcss.com/wangeditor/2.1.20/css/wangEditor.min.css" rel="stylesheet">--%>
 
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation-icons/3.0/foundation-icons.min.css">-->
-
+<%--<script src="//cdn.bootcss.com/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>--%>
+<%--<link href="//cdn.bootcss.com/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css" rel="stylesheet">--%>
 
 <script src="${pageContext.request.contextPath}/static/js/jquery-2.1.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/foundation.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/wangEditor.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.mCustomScrollbar.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/foundation.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/motion-ui.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/font-awesome.min.css">

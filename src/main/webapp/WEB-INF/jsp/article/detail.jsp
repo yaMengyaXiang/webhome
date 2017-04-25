@@ -92,6 +92,7 @@
 
     <%@include file="/WEB-INF/jsp/common/right-menubar.jsp"%>
 
+
     <div class="hide-for-small-only main-content" style="max-width: 85%; margin: 0.5rem auto;">
         <div class="padding-10-7-div">
             <div class="layer padding-5-div">
@@ -117,7 +118,7 @@
 
                 <%-- 1楼 --%>
                 <c:if test="${pageComments.currentPage == 1}">
-                <div class="row">
+                <div class="row" cmtNum="1">
                     <div class="large-3 medium-3 columns left-avatar">
                         <div class="user-avatar">
                             <img src="${pageContext.request.contextPath}/static/image/01.jpg" height="95%" width="95%" class="thumbnail">

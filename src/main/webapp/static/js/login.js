@@ -28,8 +28,11 @@ function formDivLocate() {
 
 /*适应高度，窗口放大缩小时用来调整div的高度，宽度100%不变*/
 function adjustHeight() {
-    // 浏览器当前窗口的高度
+    // 浏览器当前窗口的高度 错错！！！这个是页面的高度，应该带边框的
     var browserHeight = $(window).height();
+
+    // 下面这个才是浏览器窗口的大小
+    //var browserHeight = $(document.body).outerHeight(true);
 
     if (browserHeight % 2 != 0) {
         browserHeight += 1;

@@ -139,19 +139,53 @@ body {
 /* login.html end */
 
 #right-menubar {
-    height: 450px;
-    position: absolute;
+    height: 400px;
+    position: fixed;
     right: 10px;
     width: 46px;
     border: 1px solid red;
+    /*bottom: 32px;*/
+    top: 100px;
 }
 
 #left-menubar {
-    height: 450px;
-    position: absolute;
+    height: 400px;
+    position: fixed;
     left: 10px;
     width: 46px;
     border: 1px solid red;
+    /*bottom: 32px;*/
+    top: 100px;
+}
+
+.dropdown.menu.vertical > li.opens-right > .my-vertical-menubar-a::after {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: transparent;
+    border-image: none;
+    border-style: inset inset inset solid;
+    border-width: 6px 0 6px 6px;
+    content: "";
+    display: block;
+    height: 0;
+    width: 0;
+}
+
+.dropdown.menu.vertical > li.opens-left > .my-vertical-menubar-a::after {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: transparent;
+    border-image: none;
+    border-style: inset inset inset solid;
+    border-width: 6px 0 6px 6px;
+    content: "";
+    display: block;
+    height: 0;
+    width: 0;
 }
 
 /* index.html begin */

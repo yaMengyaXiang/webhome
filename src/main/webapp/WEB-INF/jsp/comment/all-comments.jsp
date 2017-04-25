@@ -224,7 +224,7 @@
     <%-- comment -- 正在遍历 --%>
     <%-- 楼中楼回复 --%>
 
-    <div class="row" cmtParentId="${comment.commentId}" index="${vs.index}">
+    <div class="row" cmtParentId="${comment.commentId}" index="${vs.index}" cmtNum="${comment.commentNum}">
         <div class="large-3 medium-3 columns left-avatar">
             <div class="user-avatar">
                 <img src="${pageContext.request.contextPath}/static/image/01.jpg" height="95%" width="95%" class="thumbnail">

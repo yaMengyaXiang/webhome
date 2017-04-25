@@ -13,8 +13,6 @@
 
     $(function () {
 
-        menubar.locateOnload("right-menubar");
-
         menubar.adjustMenubar("right-menubar", "right");
 
         $(window).resize(function () {
@@ -23,16 +21,80 @@
 
         });
 
+        var $floors = $(".layer > .row[cmtNum]");
 
-        $(window).scroll(function () {
-            menubar.scrollToTop("right-menubar");
+        $floors.each(function () {
+            var cmtNum = $(this).attr("cmtNum");
+
+            var $div = $("#liContainer").children("div");
+            var $ul = $div.children("ul");
+            $ul.append('<li class="bt-list-group-item"><a onclick="toFloor('+ cmtNum +')" href="javascript:void(0);">' + cmtNum + '楼</a></li>');
+
         });
 
+        $("#liContainer").mCustomScrollbar({
+            theme:"minimal-dark",
+            mouseWheel:{
+                // 鼠标滚动一下的像素？
+                scrollAmount: 150
+            }
+        });
 
     });
 
+    function toFloor(cmtNum) {
+
+        var sTop = $(window).scrollTop();
+
+        var top;
+
+        var tmHeight = $("#top-menubar").height();
+
+        if (sTop == 0) {
+            top = $('.layer > .row[cmtNum='+ cmtNum + ']').offset().top - tmHeight + 5 - tmHeight;
+        } else {
+            top = $('.layer > .row[cmtNum='+ cmtNum + ']').offset().top - tmHeight + 5;
+        }
+
+        $("html,body").animate({
+            scrollTop: top
+        });
+
+    }
+
+    function toTop() {
+        $("html,body").animate({
+            scrollTop: 0
+        });
+    }
 
 </script>
 
 <%--右边菜单栏--%>
-<div id="right-menubar" class="hide-for-small-only" style="z-index: 50;"></div>
+<div id="right-menubar" class="hide-for-small-only" style="z-index: 50;">
+    <ul class="vertical dropdown menu" data-dropdown-menu>
+        <li class="opens-left">
+            <a class="my-vertical-menubar-a">按钮</a>
+            <ul class="menu">
+                <li><a href="#">Item A</a></li>
+                <li><a href="#">Item B</a></li>
+                <li><a href="#">Item C</a></li>
+            </ul>
+        </li>
+        <li class="opens-left">
+            <a class="my-vertical-menubar-a">跳楼</a>
+            <ul class="menu">
+                <li id="liContainer" style="height: 390px; overflow: auto;">
+                    <div style="margin: 15px 16px 15px -8px;">
+                        <ul class="bt-list-group">
+
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        <li class="opens-left">
+            <a href="javascript:void(0);" onclick="toTop()" class="my-vertical-menubar-a">顶部</a>
+        </li>
+    </ul>
+</div>
