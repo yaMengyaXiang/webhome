@@ -26,16 +26,20 @@
         $floors.each(function () {
             var cmtNum = $(this).attr("cmtNum");
 
+            var username = $(this).find(".user-name > label").attr("title");
+
             var $div = $("#liContainer").children("div");
             var $ul = $div.children("ul");
-            $ul.append('<li class="bt-list-group-item"><a onclick="toFloor('+ cmtNum +')" href="javascript:void(0);">' + cmtNum + '楼</a></li>');
+            $ul.append('<li onclick="toFloor('+ cmtNum +')" cm="' +
+                    cmtNum + '" class="bt-list-group-item floor-link"><a href="javascript:void(0);">' +
+                    cmtNum + '楼 &nbsp; &larr; &nbsp;'+ username +'</a></li>');
 
         });
 
         $("#liContainer").mCustomScrollbar({
             theme:"minimal-dark",
             mouseWheel:{
-                // 鼠标滚动一下的像素？
+                // 鼠标滚轮滚动一下的像素？
                 scrollAmount: 150
             }
         });
@@ -84,7 +88,7 @@
         <li class="opens-left">
             <a class="my-vertical-menubar-a">跳楼</a>
             <ul class="menu">
-                <li id="liContainer" style="height: 390px; overflow: auto;">
+                <li id="liContainer" style="height: 320px; overflow: auto;">
                     <div style="margin: 15px 16px 15px -8px;">
                         <ul class="bt-list-group">
 

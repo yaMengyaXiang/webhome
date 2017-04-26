@@ -12,6 +12,13 @@ public interface CommentService {
 
     int deleteByPrimaryKey(Long commentId);
 
+    /**
+     * 通过id删除一组记录，会把子回复也删除
+     * @param commentId
+     * @return
+     */
+    int deleteDirectComment(Long commentId);
+
     int insert(Comment record);
 
     Comment selectByPrimaryKey(Long commentId);

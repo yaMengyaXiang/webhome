@@ -71,6 +71,14 @@
         where comment_id = #{commentId,jdbcType=BIGINT}
     </delete>
 
+    <delete id="deleteDirectComment" parameterType="java.lang.Long">
+        delete from comment
+        where
+          comment_id = #{commentId,jdbcType=BIGINT}
+          or
+          comment_parent_id = #{commentId,jdbcType=BIGINT}
+    </delete>
+
     <insert id="insert" parameterType="tech.zhetengrensheng.webhome.core.entity.Comment">
         insert into comment
         <trim prefix="(" suffix=")" suffixOverrides=",">

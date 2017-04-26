@@ -158,6 +158,14 @@ body {
     top: 100px;
 }
 
+.floor-link {
+    cursor: pointer;
+}
+
+.floor-link:hover {
+    background-color: #e5f3ff;
+}
+
 .dropdown.menu.vertical > li.opens-right > .my-vertical-menubar-a::after {
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;

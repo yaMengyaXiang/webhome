@@ -12,13 +12,14 @@
         <result column="click_hit" property="clickHit" jdbcType="INTEGER"/>
         <result column="reply_hit" property="replyHit" jdbcType="INTEGER"/>
         <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="max_floor_num" property="maxFloorNum" jdbcType="INTEGER"/>
         <result column="article_content" property="articleContent" jdbcType="LONGVARCHAR"/>
         <result column="publish_date" jdbcType="TIMESTAMP" property="publishDate" />
         <result column="edit_date" jdbcType="TIMESTAMP" property="editDate" />
     </resultMap>
 
     <sql id="Base_Column_List">
-      article_id, title, tag_id, keyword, summary, click_hit, reply_hit, user_id, article_content, publish_date, edit_date
+      article_id, title, tag_id, keyword, summary, click_hit, reply_hit, user_id, article_content, publish_date, edit_date, max_floor_num
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
@@ -81,6 +82,9 @@
             <if test="userId != null">
                 user_id,
             </if>
+            <if test="maxFloorNum != null">
+                max_floor_num,
+            </if>
             <if test="publishDate != null">
                 publish_date,
             </if>
@@ -115,6 +119,9 @@
             </if>
             <if test="userId != null">
                 #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="maxFloorNum != null">
+                #{max_floor_num,jdbcType=INTEGER},
             </if>
             <if test="publishDate != null">
                 #{publishDate,jdbcType=TIMESTAMP},
@@ -151,6 +158,9 @@
             </if>
             <if test="userId != null">
                 user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="maxFloorNum != null">
+                max_floor_num = #{maxFloorNum,jdbcType=INTEGER},
             </if>
             <if test="publishDate != null">
                 publish_date = #{publishDate,jdbcType=TIMESTAMP},

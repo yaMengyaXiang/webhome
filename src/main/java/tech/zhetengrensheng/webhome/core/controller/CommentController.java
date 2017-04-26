@@ -59,8 +59,12 @@ public class CommentController {
                 Integer replyHit = article.getReplyHit();
                 // 总回复量+1
                 article.setReplyHit(replyHit + 1);
-                // 楼数 = 直接回复数 + 1 + 1，1楼显示文章内容，再+1是该回复所处的楼层数
-                comment.setCommentNum(directCommentsCount + 1 + 1 + "");
+                // 最大楼层数
+                Integer maxFloorNum = article.getMaxFloorNum();
+                // +1
+                article.setMaxFloorNum(maxFloorNum + 1);
+                // 楼数 = 最大回复楼层数 + 1
+                comment.setCommentNum(maxFloorNum + 1 + "");
 
                 commentService.insert(comment);
                 articleService.update(article);
@@ -163,6 +167,29 @@ public class CommentController {
         request.setAttribute("cmt", cmt);
 
         return "/comment/comment.jsp";
+    }
+
+    @RequestMapping("/deleteDirectComment.action")
+    @ResponseBody
+    public String deleteDirectComment(Long commentId) {
+
+        JSONObject jo = new JSONObject();
+        jo.put("success", "false");
+
+        if (commentId != null) {
+            try {
+                // 会把子回复也一并删除
+                commentService.deleteDirectComment(commentId);
+
+                jo.put("success", "true");
+
+            } catch (Exception e) {
+                jo.put("success", "false");
+            }
+
+        }
+
+        return jo.toString();
     }
 
 }

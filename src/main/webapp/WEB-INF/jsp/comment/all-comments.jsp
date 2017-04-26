@@ -213,6 +213,43 @@
 
     }
 
+    /**
+     * 删除楼层
+     * @param linkObj
+     */
+    function deleteFloor(linkObj) {
+
+        if (!window.confirm("确定要删除该楼层吗 ?")) {
+            return;
+        }
+
+        // 请求后台删除楼层，返回json数据，然后移除该楼层的div
+        var $floor = $(linkObj).parents(".row");
+
+        var cmtId = $floor.attr("cmtParentId");
+        var cmtNum = $floor.attr("cmtNum");
+
+        var url = $(linkObj).attr("url");
+
+        var param = {
+            "commentId": cmtId
+        };
+
+        $.post(url, param, function (data) {
+            var json = jQuery.parseJSON(data);
+            if (json.success != "true") {
+                alert("删除该楼层失败！");
+            } else {
+                // 移除该楼层
+                $floor.remove();
+                // dom结构发生变化，“跳楼”按钮那里也要把删掉的楼层去除
+                var $liContainer = $("#liContainer");
+                $liContainer.find("li[cm=" + cmtNum + "]").remove();
+
+            }
+        });
+
+    }
 
 </script>
 
@@ -230,7 +267,7 @@
                 <img src="${pageContext.request.contextPath}/static/image/01.jpg" height="95%" width="95%" class="thumbnail">
             </div>
             <div class="user-name">
-                <label>${comment.user.username}</label>
+                <label title="${comment.user.username}">${comment.user.username}</label>
             </div>
         </div>
         <div class="large-9 medium-9 columns right-content">
@@ -244,8 +281,9 @@
                     <%--回复的时间，楼层数--%>
                 <div class="article-publish-date" style="margin-bottom: 10px;">
                         <c:if test="${comment.userId == currentLoginUser.userId}">
-                            <a href="#" class="delete-this-floor">删除</a>
-                            <a href="#" class="only-see-this-author">只看我</a>
+                            <a href="javascript:void(0);" url="${pageContext.request.contextPath}/comment/deleteDirectComment.action"
+                               onclick="deleteFloor(this)" class="delete-this-floor">删除</a>
+                            <a href="javascript:void(0);" class="only-see-this-author">只看我</a>
                         </c:if>
                         <c:if test="${comment.userId != currentLoginUser.userId}">
                             <a href="#" class="only-see-this-author">只看该作者</a>

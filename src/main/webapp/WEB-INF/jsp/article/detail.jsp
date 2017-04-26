@@ -64,6 +64,16 @@
 
             });
 
+            articleInfoBarScrollToTop("article-info");
+
+            $(window).scroll(function () {
+                articleInfoBarScrollToTop("article-info");
+            });
+
+
+            $(window).resize(function () {
+                articleInfoBarResize("article-info");
+            });
 
         });
 
@@ -79,6 +89,47 @@
 
         }
 
+        function articleInfoBarResize(toTopId) {
+            var $menubar = $("#" + toTopId);
+
+            var $lr = $(".layer > .row:eq(1)");
+
+            // 获取带小数点的宽度值，这个是精确的，要是用jQuery的width()方法，会经过四舍五入
+            var mWidth = $lr[0].getBoundingClientRect().width;
+//            var mWidth = $lr.outerWidth(true);
+
+            $menubar.css("width", mWidth + "px");
+
+        }
+
+        function articleInfoBarScrollToTop(toTopId) {
+            var $menubar = $("#" + toTopId);
+
+            var mHeight = $menubar.height();
+
+            var $lr = $(".layer > .row:eq(1)");
+
+            var mWidth = $lr[0].getBoundingClientRect().width;
+
+            var top = $lr.offset().top - mHeight;
+
+            var sTop = $(window).scrollTop();
+
+            if (sTop >= top) {
+                $menubar.css("top", "0px");
+                $menubar.css("position", "fixed");
+                $menubar.css("width", mWidth + "px");
+                $menubar.css("border-bottom", "1px solid #ccccff");
+
+            } else {
+
+                $menubar.css("position", "relative");
+                $menubar.css("border-bottom", "none");
+
+            }
+
+        }
+
     </script>
 
 </head>
@@ -86,7 +137,7 @@
 
     <%@include file="/WEB-INF/jsp/common/header.jsp"%>
 
-    <%@include file="/WEB-INF/jsp/common/top-menubar.jsp"%>
+    <%@include file="/WEB-INF/jsp/common/menubar.jsp"%>
 
     <%@include file="/WEB-INF/jsp/common/left-menubar.jsp"%>
 
@@ -98,7 +149,7 @@
             <div class="layer padding-5-div">
 
                 <%-- 文章标题，点击量，回复量 --%>
-                <div class="row">
+                <div class="row" id="article-info" style="z-index: 100;">
                     <div class="large-3 medium-3 columns left-avatar-title text-center">
                         <div class="padding-5-0-div">
                             <label class="article-click-reply-hit">
@@ -124,7 +175,7 @@
                             <img src="${pageContext.request.contextPath}/static/image/01.jpg" height="95%" width="95%" class="thumbnail">
                         </div>
                         <div class="user-name">
-                            <label>${articleUser.username}</label>
+                            <label title="${articleUser.username}">${articleUser.username}</label>
                         </div>
                     </div>
                     <div class="large-9 medium-9 columns right-content">
@@ -133,7 +184,14 @@
                                ${article.articleContent}
                             </div>
                             <div class="article-publish-date">
-                                <a href="#" class="only-see-this-author">只看该作者</a>
+                                <c:if test="${articleUser.userId == currentLoginUser.userId}">
+                                    <a href="javascript:void(0);" url="${pageContext.request.contextPath}/comment/deleteDirectComment.action"
+                                       onclick="deleteFloor(this)" class="delete-this-floor">删除</a>
+                                    <a href="javascript:void(0);" class="only-see-this-author">只看我</a>
+                                </c:if>
+                                <c:if test="${articleUser.userId != currentLoginUser.userId}">
+                                    <a href="#" class="only-see-this-author">只看该作者</a>
+                                </c:if>
                                 1楼 | 发表于：<fmt:formatDate value="${article.publishDate}" type="both"></fmt:formatDate>
                                 <a href="#" class="article-reply">回复</a>
                             </div>

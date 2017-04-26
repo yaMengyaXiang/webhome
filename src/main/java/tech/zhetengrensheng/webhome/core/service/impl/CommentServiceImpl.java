@@ -27,6 +27,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
+    public int deleteDirectComment(Long commentId) {
+        return commentDao.deleteDirectComment(commentId);
+    }
+
+    @Override
+    @Transactional
     public int insert(Comment record) {
         return commentDao.insert(record);
     }

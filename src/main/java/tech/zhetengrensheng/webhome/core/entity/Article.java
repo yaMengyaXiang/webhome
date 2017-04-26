@@ -30,6 +30,16 @@ public class Article implements Serializable {
 
     private Date editDate;
 
+    private Integer maxFloorNum;
+
+    public Integer getMaxFloorNum() {
+        return maxFloorNum;
+    }
+
+    public void setMaxFloorNum(Integer maxFloorNum) {
+        this.maxFloorNum = maxFloorNum;
+    }
+
     public Date getEditDate() {
         return editDate;
     }
