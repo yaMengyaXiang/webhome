@@ -45,7 +45,7 @@
       where article_id = #{articleId,jdbcType=BIGINT}
     </delete>
 
-    <delete id="deleteTags" parameterType="java.lang.Long">
+    <delete id="deleteArticles" parameterType="java.lang.Long">
         delete from article
         where article_id in
          (

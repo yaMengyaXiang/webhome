@@ -8,7 +8,10 @@ import tech.zhetengrensheng.webhome.core.service.ArticleService;
 import tech.zhetengrensheng.webhome.core.util.Page;
 
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Long on 2017-04-21.
@@ -27,13 +30,16 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public int deleteTags(Long[] articleIds) {
-        return articleDao.deleteTags(articleIds);
+    public int deleteArticles(Long[] articleIds) {
+        return articleDao.deleteArticles(articleIds);
     }
 
     @Override
     @Transactional
     public int insert(Article record) {
+        record.setPublishDate(new Date());
+        record.setClickHit(0);
+        record.setReplyHit(0);
         return articleDao.insert(record);
     }
 
@@ -49,12 +55,31 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional
+    public int userUpdateArticle(Article record) {
+        record.setEditDate(new Date());
+        return articleDao.update(record);
+    }
+
+    @Override
     public List<Article> selectAll(Page<Article> page) {
         return articleDao.selectAll(page);
     }
 
     @Override
-    public List<Article> selectArticles(Page<Article> page) {
-        return articleDao.selectArticles(page);
+    public Page<Article> selectArticles(Integer userId, Integer pageNo) {
+
+        Page<Article> pageArticles = new Page<Article>(pageNo);
+
+        Map<String, Object> conditions = new HashMap<String, Object>(1);
+        conditions.put("userId", userId);
+
+        pageArticles.setConditions(conditions);
+
+        List<Article> articles = articleDao.selectArticles(pageArticles);
+
+        pageArticles.setResults(articles);
+
+        return pageArticles;
     }
 }

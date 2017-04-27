@@ -11,7 +11,7 @@ public interface Constants {
 	/**
 	 * 一页显示记录数量，10条记录
 	 */
-	public static final Integer PAGE_SIZE = 10;
+	public static final Integer PAGE_SIZE = 5;
 
 	/**
 	 * 子分页，一页显示记录数，楼中楼回复中用到子分页

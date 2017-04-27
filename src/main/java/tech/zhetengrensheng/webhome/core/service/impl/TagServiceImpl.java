@@ -4,11 +4,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.zhetengrensheng.webhome.core.dao.TagDao;
 import tech.zhetengrensheng.webhome.core.entity.Tag;
+import tech.zhetengrensheng.webhome.core.entity.User;
 import tech.zhetengrensheng.webhome.core.service.TagService;
 import tech.zhetengrensheng.webhome.core.util.Page;
+import tech.zhetengrensheng.webhome.core.util.PageNumberGenerator;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Long on 2017/4/9.
@@ -49,8 +53,20 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<Tag> selectAll(Page<Tag> page) {
-        return tagDao.selectAll(page);
+    public Page<Tag> selectAll(Integer userId, Integer pageNo) {
+
+        Page<Tag> pageTags = new Page<Tag>(pageNo);
+
+        Map<String, Object> conditions = new HashMap<String, Object>(1);
+        conditions.put("userId", userId);
+
+        pageTags.setConditions(conditions);
+
+        List<Tag> tags = tagDao.selectAll(pageTags);
+
+        pageTags.setResults(tags);
+
+        return pageTags;
     }
 
     @Override

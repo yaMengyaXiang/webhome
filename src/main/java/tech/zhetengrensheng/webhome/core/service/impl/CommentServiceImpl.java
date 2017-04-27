@@ -50,7 +50,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> selectDirectComments(Page<Comment> page) {
-        return commentDao.selectDirectComments(page);
+        List<Comment> comments = commentDao.selectDirectComments(page);
+
+        return comments;
     }
 
     @Override

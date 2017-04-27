@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import tech.zhetengrensheng.webhome.core.entity.Article;
 import tech.zhetengrensheng.webhome.core.entity.Comment;
 import tech.zhetengrensheng.webhome.core.entity.User;
+import tech.zhetengrensheng.webhome.core.facade.UserBehaviorFacade;
 import tech.zhetengrensheng.webhome.core.service.ArticleService;
 import tech.zhetengrensheng.webhome.core.service.CommentService;
 import tech.zhetengrensheng.webhome.core.service.UserService;
@@ -37,6 +38,9 @@ public class CommentController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private UserBehaviorFacade userBehaviorFacade;
 
     @RequestMapping("/publishComment.action")
     @ResponseBody
@@ -124,45 +128,18 @@ public class CommentController {
 
 
     @RequestMapping("/showComment.action")
-    public String showComment(Comment comment, Integer subPageNo, HttpServletRequest request) {
+    public String showComment(Long commentId, Long articleId, Integer subPageNo, HttpServletRequest request) {
 
         if (subPageNo == null || subPageNo < 1) {
             subPageNo = 1;
         }
 
-        Long articleId = comment.getArticleId();
-        Long commentId = comment.getCommentId();
-
-        Page<Comment> pageSubComments = new Page<Comment>(subPageNo);
-        Map<String, Object> subConditions = new HashMap<String, Object>();
-
-        subConditions.put("articleId", articleId);
-        subConditions.put("commentParentId", commentId);
-
-        pageSubComments.setConditions(subConditions);
-        pageSubComments.setPageSize(Constants.SUB_PAGE_SIZE);
-
-        // 也是只有userId，没有user的其他信息，这是楼中楼的回复
-        List<Comment> subComments = commentService.selectSubComments(pageSubComments);
-        if (subComments != null && !subComments.isEmpty()) {
-            for (Comment subCmt : subComments) {
-                User subCmtUser = userService.selectByPrimaryKey(subCmt.getUserId());
-                subCmt.setUser(subCmtUser);
-            }
-        }
-
-        pageSubComments.setResults(subComments);
-
-        List<Integer> subPageNums = PageNumberGenerator.generator(pageSubComments.getCurrentPage(), pageSubComments.getTotalPageNum());
-        pageSubComments.setPageNums(subPageNums);
+        Page<Comment> pageSubComments = userBehaviorFacade.querySubComments(commentId, articleId, subPageNo);
 
         Comment cmt = commentService.selectByPrimaryKey(commentId);
 
-        Integer count = commentService.selectSubCommentsCount(commentId);
-
-        cmt.setSubCommentCount(count);
-
         cmt.setPageSubComments(pageSubComments);
+        cmt.setSubCommentCount(pageSubComments.getTotalResults());
 
         request.setAttribute("cmt", cmt);
 

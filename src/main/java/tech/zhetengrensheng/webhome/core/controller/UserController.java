@@ -165,18 +165,9 @@ public class UserController {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("currentLoginUser");
 
-        Page<Tag> pageTags = new Page<Tag>(pageNo);
-
-        Map<String, Object> conditions = new HashMap<String, Object>(1);
-        conditions.put("userId", user.getUserId());
-
-        pageTags.setConditions(conditions);
-
-        List<Tag> tags = tagService.selectAll(pageTags);
+        Page<Tag> pageTags = tagService.selectAll(user.getUserId(), pageNo);
 
         List<Integer> pageNums = PageNumberGenerator.generator(pageTags.getCurrentPage(), pageTags.getTotalPageNum());
-
-        pageTags.setResults(tags);
 
         request.setAttribute("pageTags", pageTags);
         request.setAttribute("pageNums", pageNums);
@@ -194,16 +185,7 @@ public class UserController {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("currentLoginUser");
 
-        Page<Article> pageArticles = new Page<Article>(pageNo);
-
-        Map<String, Object> conditions = new HashMap<String, Object>(1);
-        conditions.put("userId", user.getUserId());
-
-        pageArticles.setConditions(conditions);
-
-        List<Article> articles = articleService.selectArticles(pageArticles);
-
-        pageArticles.setResults(articles);
+        Page<Article> pageArticles = articleService.selectArticles(user.getUserId(), pageNo);
 
         List<Integer> pageNums = PageNumberGenerator.generator(pageArticles.getCurrentPage(), pageArticles.getTotalPageNum());
 

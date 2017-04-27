@@ -221,7 +221,7 @@
                                onclick="preAndNextPage(this)">&lt;</a>
                         </li>
 
-                        <c:forEach items="${pageNums}" var="pageNum">
+                        <c:forEach items="${pageComments.pageNums}" var="pageNum">
                         <li>
                             <a <c:if test="${pageNum == pageComments.currentPage}">style="background: #1779ba none repeat scroll 0 0;color: #fefefe;cursor: default;" </c:if>
                                class="pagination-a"

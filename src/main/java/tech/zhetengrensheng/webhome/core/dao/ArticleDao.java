@@ -9,7 +9,7 @@ public interface ArticleDao {
 
     int deleteByPrimaryKey(Long articleId);
 
-    int deleteTags(Long[] articleIds);
+    int deleteArticles(Long[] articleIds);
 
     int insert(Article record);
 

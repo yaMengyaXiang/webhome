@@ -1,6 +1,7 @@
 package tech.zhetengrensheng.webhome.core.service;
 
 import tech.zhetengrensheng.webhome.core.entity.Tag;
+import tech.zhetengrensheng.webhome.core.entity.User;
 import tech.zhetengrensheng.webhome.core.util.Page;
 
 import java.util.List;
@@ -45,13 +46,13 @@ public interface TagService {
      */
     int update(Tag record);
 
-
     /**
-     * 查询所有的标签，带分页
-     * @param page
+     * 通过userId查询用户的标签，带分页
+     * @param userId
+     * @param pageNo
      * @return
      */
-    List<Tag> selectAll(Page<Tag> page);
+    Page<Tag> selectAll(Integer userId, Integer pageNo);
 
     /**
      * 查询所有的标签，不带分页
