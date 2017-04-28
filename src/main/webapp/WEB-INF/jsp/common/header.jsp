@@ -62,7 +62,7 @@
         <div class="title-bar-right">
             <ul id="header-menu-ul" class="menu">
                 <li>
-                    <a href="#">首页</a>
+                    <a href="${pageContext.request.contextPath}/">首页</a>
                 </li>
                 <li>
                     <a href="#">我的折腾</a>

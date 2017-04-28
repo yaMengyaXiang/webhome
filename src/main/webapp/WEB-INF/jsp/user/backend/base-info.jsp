@@ -7,67 +7,96 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<script type="text/javascript">
 
-    $(function() {
+<!DOCTYPE html>
+<html>
+<head lang="zh-cn">
 
-        $(document).foundation();
+    <title>个人中心</title>
 
-    });
+    <%@include file="/WEB-INF/jsp/common/static.jsp"%>
+
+    <script type="text/javascript">
+
+        $(function() {
+
+            $(document).foundation();
+
+        });
 
 
-</script>
+    </script>
 
-<ul class="accordion" data-accordion data-allow-all-closed="true">
-    <li class="accordion-item is-active" data-accordion-item>
 
-        <a href="javascript:void(0);" class="accordion-title bg-light-blue">
-            <i class="fa fa-address-card-o"></i>
-            基本资料
-        </a>
+</head>
+<body>
 
-        <div class="accordion-content" data-tab-content>
+<%@include file="/WEB-INF/jsp/common/header.jsp"%>
 
-            <form class="padding-10-div" action="${pageContext.request.contextPath}/user/login.action" method="post">
-                <div class="row">
-                    <div class="large-6 medium-12 columns">
-                        <label>
-                            用户名：<input type="text" name="username">
-                        </label>
+<div class="row">
+    <div class="padding-20-5-div">
+
+        <%@include file="/WEB-INF/jsp/user/left-menu.jsp"%>
+
+        <div id="mainContent" class="medium-8 large-9 columns">
+            <ul class="accordion" data-accordion data-allow-all-closed="true">
+                <li class="accordion-item is-active" data-accordion-item>
+
+                    <a href="javascript:void(0);" class="accordion-title bg-light-blue">
+                        <i class="fa fa-address-card-o"></i>
+                        基本资料
+                    </a>
+
+                    <div class="accordion-content" data-tab-content>
+
+                        <form class="padding-10-div" action="${pageContext.request.contextPath}/user/login.action" method="post">
+                            <div class="row">
+                                <div class="large-6 medium-12 columns">
+                                    <label>
+                                        用户名：<input type="text" name="username">
+                                    </label>
+                                </div>
+                                <div class="large-6 medium-12 columns">
+                                    <label>
+                                        密码：<input type="password" name="password">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="large-6 medium-12 columns">
+                                    <label>
+                                        邮箱：<input type="text" name="mailbox">
+                                    </label>
+                                </div>
+                                <div class="large-6 medium-12 columns">
+                                    <label>
+                                        个性签名：<input type="text" name="signature">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="large-6 medium-12 columns">
+                                    <label>
+                                        个人简介： <textarea class="padding-10-div" style="min-height: 60px;" placeholder="介绍一下自己吧n_n"
+                                                        name="description"></textarea>
+                                    </label>
+                                </div>
+                                <div class="large-6 medium-12 columns text-center">
+                                    <label>
+                                        <button class="button" style="margin-top: 36px; margin-bottom: 0;">更新信息</button>
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+
                     </div>
-                    <div class="large-6 medium-12 columns">
-                        <label>
-                            密码：<input type="password" name="password">
-                        </label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="large-6 medium-12 columns">
-                        <label>
-                            邮箱：<input type="text" name="mailbox">
-                        </label>
-                    </div>
-                    <div class="large-6 medium-12 columns">
-                        <label>
-                            个性签名：<input type="text" name="signature">
-                        </label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="large-6 medium-12 columns">
-                        <label>
-                            个人简介： <textarea class="padding-10-div" style="min-height: 60px;" placeholder="介绍一下自己吧n_n"
-                                            name="description"></textarea>
-                        </label>
-                    </div>
-                    <div class="large-6 medium-12 columns text-center">
-                        <label>
-                            <button class="button" style="margin-top: 36px; margin-bottom: 0;">更新信息</button>
-                        </label>
-                    </div>
-                </div>
-            </form>
-
+                </li>
+            </ul>
         </div>
-    </li>
-</ul>
+
+
+    </div>
+</div>
+
+</body>
+</html>

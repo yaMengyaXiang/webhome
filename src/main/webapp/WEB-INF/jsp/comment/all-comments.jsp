@@ -267,7 +267,8 @@
                 <img src="${pageContext.request.contextPath}/static/image/01.jpg" height="95%" width="95%" class="thumbnail">
             </div>
             <div class="user-name">
-                <label title="${comment.user.username}">${comment.user.username}</label>
+                <a href="${pageContext.request.contextPath}/user/showOtherUserInfo.action?userId=${comment.userId}"
+                   target="_blank" title="${comment.user.username}">${comment.user.username}</a>
             </div>
         </div>
         <div class="large-9 medium-9 columns right-content">

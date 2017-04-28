@@ -24,6 +24,8 @@
 
             $("#main").css("width", mainWidth + "px");
 
+            console.log(mainWidth);
+
         }
 
         function initEcharts() {
@@ -37,7 +39,7 @@
 
             myChart.showLoading();
 
-            $.get('1.gexf', function (xml) {
+            $.get('${pageContext.request.contextPath}/static/data/1.gexf', function (xml) {
                 myChart.hideLoading();
 
                 var graph = echarts.dataTool.gexf.parse(xml);
@@ -103,7 +105,7 @@
 
             $(window).resize(function(){
                 resizeMain();
-                myChart.resize();
+                myChart.resize({width: 'auto', height: 'auto'});
             });
 
         }
@@ -138,9 +140,9 @@
                         <a class="titleLink" href="#">Ta的资料</a>
                     </div>
                     <div class="data-list-div">
-                        <div style="margin: 20px auto 0px;; width: 95%;text-align: center;">
-                            <img class="thumbnail" height="200px" width="200px" style="margin-bottom: 15px;" src="../image/avatar.jpg">
-                            <label style="margin-bottom: 10px;font-size: 18px; font-weight: bold;">追梦的自学者</label>
+                        <div style="margin: 20px auto 0px; width: 95%;text-align: center;">
+                            <img class="thumbnail" height="95%" width="95%" style="margin-bottom: 15px;" src="${pageContext.request.contextPath}/static/image/05.jpg">
+                            <label style="margin-bottom: 10px;font-size: 18px; font-weight: bold;">${otherUser.username}</label>
                             <label style="margin-bottom: 15px;">
                                 <i class="fa fa-mars"></i>
                                 年龄：1年
@@ -170,10 +172,10 @@
                     <li class="tabs-title"><a href="#panel4v">Tab 4</a></li>
                 </ul>
 
-                <div class="tabs-content vertical" data-tabs-content="deeplinked-tabs" style="border: 1px solid #ccccff;">
+                <div class="tabs-content vertical" data-tabs-content="deeplinked-tabs" style="border: 1px solid #ccccff; border-top: none;">
                     <div class="tabs-panel is-active" id="panel1v">
 
-                        <div id = "main" style="height: 400px; margin: 0 auto;" ></div>
+                        <div id="main" style="height: 400px; margin: 0 auto;" ></div>
 
                     </div>
                     <div class="tabs-panel" id="panel2v">
@@ -226,7 +228,7 @@
 
                     </div>
                     <div class="tabs-panel" id="panel3v">
-                        <img class="thumbnail" src="../image/01.jpg">
+                        <img class="thumbnail" height="95%" width="95%" src="${pageContext.request.contextPath}/static/image/04.jpg">
                     </div>
                     <div class="tabs-panel" id="panel4v">
                         <p>Loidunt ut labore et dolore magna aliqua.</p>

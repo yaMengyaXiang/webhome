@@ -120,11 +120,13 @@
                 $menubar.css("position", "fixed");
                 $menubar.css("width", mWidth + "px");
                 $menubar.css("border-bottom", "1px solid #ccccff");
+                $menubar.css("border-top", "none");
 
             } else {
 
                 $menubar.css("position", "relative");
                 $menubar.css("border-bottom", "none");
+                $menubar.css("border-top", "1px solid #ccccff");
 
             }
 
@@ -175,7 +177,8 @@
                             <img src="${pageContext.request.contextPath}/static/image/01.jpg" height="95%" width="95%" class="thumbnail">
                         </div>
                         <div class="user-name">
-                            <label title="${articleUser.username}">${articleUser.username}</label>
+                            <a href="${pageContext.request.contextPath}/user/showOtherUserInfo.action?userId=${articleUser.userId}"
+                               target="_blank" title="${articleUser.username}">${articleUser.username}</a>
                         </div>
                     </div>
                     <div class="large-9 medium-9 columns right-content">

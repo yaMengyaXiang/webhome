@@ -26,7 +26,7 @@
         $floors.each(function () {
             var cmtNum = $(this).attr("cmtNum");
 
-            var username = $(this).find(".user-name > label").attr("title");
+            var username = $(this).find(".user-name > a").attr("title");
 
             var $div = $("#liContainer").children("div");
             var $ul = $div.children("ul");

@@ -15,6 +15,7 @@ import tech.zhetengrensheng.webhome.core.util.Page;
 import tech.zhetengrensheng.webhome.core.util.PageNumberGenerator;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,6 +134,58 @@ public class UserBehaviorFacade {
 
 
         return pageSubComments;
+    }
+
+    /**
+     * 发表子回复（楼中楼回复），comment里面带有userId
+     * @param comment
+     */
+    public void publishSubComment(Comment comment) {
+        Long commentParentId = comment.getCommentParentId();
+
+        // 这是几楼
+        String commentNum = commentService.selectCommentNum(commentParentId);
+
+        // 查询该楼层的回复数
+        Integer count = commentService.selectSubCommentsCount(commentParentId);
+        String newCmtNum = commentNum + "-" + (count + 1);
+
+        comment.setCommentNum(newCmtNum);
+        Date commentDate = new Date();
+        comment.setCommentDate(commentDate);
+
+        Long articleId = comment.getArticleId();
+
+        Article article = articleService.selectByPrimaryKey(articleId);
+        article.setReplyHit(article.getReplyHit() + 1);
+
+        articleService.update(article);
+        commentService.insert(comment);
+    }
+
+    /**
+     * 发表直接回复，不是楼中楼回复
+     * @param comment
+     */
+    public void publishDirectComment(Comment comment) {
+        comment.setCommentDate(new Date());
+
+        Long articleId = comment.getArticleId();
+
+        Article article = articleService.selectByPrimaryKey(articleId);
+
+        Integer replyHit = article.getReplyHit();
+        // 总回复量+1
+        article.setReplyHit(replyHit + 1);
+        // 最大楼层数
+        Integer maxFloorNum = article.getMaxFloorNum();
+        // +1
+        article.setMaxFloorNum(maxFloorNum + 1);
+        // 楼数 = 最大回复楼层数 + 1
+        comment.setCommentNum(maxFloorNum + 1 + "");
+
+        commentService.insert(comment);
+        articleService.update(article);
     }
 
 }

@@ -127,7 +127,7 @@ public class UserController {
             // 放入session，并设置生命周期
             session.setAttribute("currentLoginUser", user);
             // 一小时
-            session.setMaxInactiveInterval(1 * 60 * 60);
+            session.setMaxInactiveInterval(1 * 60);
 
             return "redirect:" + nextUri;
         }
@@ -227,6 +227,19 @@ public class UserController {
     public String toMyFoucs(HttpServletRequest request) {
 
         return "user/backend/focus.jsp";
+    }
+
+    @RequestMapping("/showOtherUserInfo.action")
+    public String showOtherUserInfo(Integer userId, HttpServletRequest request) {
+
+        if (userId != null) {
+            User user = userService.selectByPrimaryKey(userId);
+
+            request.setAttribute("otherUser", user);
+
+        }
+
+        return "user/other-user-info.jsp";
     }
 
 }
