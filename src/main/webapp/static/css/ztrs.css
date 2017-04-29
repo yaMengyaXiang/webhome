@@ -575,6 +575,8 @@ body {
 
 .sub-comment-reply-span > a {
     color: #333333;
+    display: inline-block;
+    padding: 4px 0;
 }
 
 .sub-comment-reply-span > a:hover {
@@ -583,6 +585,7 @@ body {
 
 .sub-comment-reply-span:hover {
     border: 1px solid #5bc0de;
+    color: #269abc;
 }
 
 .font-size-12 {

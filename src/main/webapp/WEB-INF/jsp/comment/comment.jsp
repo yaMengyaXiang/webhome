@@ -26,12 +26,20 @@
 <div class="sub-comment-content">
     <%--需要刷新的部分--%>
     <c:forEach items="${cmt.pageSubComments.results}" var="subComment">
-        <ul class="accordion margin-bottom-06rem" data-accordion data-allow-all-closed="true" data-slide-speed="90">
+        <ul class="accordion margin-bottom-06rem" data-accordion data-allow-all-closed="true" data-slide-speed="80">
             <li class="accordion-item is-active" data-accordion-item>
 
-                <a href="javascript:void(0);" class="accordion-title my-accordion-title">${subComment.user.username}</a>
+                <%--<a href="javascript:void(0);" class="accordion-title my-accordion-title">${subComment.user.username}</a>--%>
+                <a href="javascript:void(0);" style="display: none;" class="accordion-title my-accordion-title">${subComment.user.username}</a>
 
-                <div class="accordion-content my-accordion-content" data-tab-content>
+                <div class="text-left" style="border: 1px solid #e6e6e6; padding: 0.5rem 1rem; font-size: 12px;">
+                    <a href="${pageContext.request.contextPath}/user/showOtherUserInfo.action?userId=${subComment.userId}"
+                       target="_blank" >${subComment.user.username}</a>
+                    <a flag="down" onclick="showOrHideContent(this)" href="javascript:void(0);"
+                       style="float: right; font-size: 18px; margin-top: 1px;"><i class="fa fa-angle-down"></i></a>
+                </div>
+
+                <div class="accordion-content my-accordion-content" data-tab-content style="border-top: 0px solid #e6e6e6;">
                     <ul class="bt-list-group my-bt-list-group" style="margin-left: 0;">
                         <li class="bt-list-group-item">${subComment.commentContent}</li>
                     </ul>

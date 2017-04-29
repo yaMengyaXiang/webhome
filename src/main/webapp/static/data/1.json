@@ -1,0 +1,179 @@
+{
+    "type": "force",
+    "categories": [
+        {
+            "name": "Java",
+            "keyword": {},
+            "symbol": "circle",
+            "itemStyle": {
+                "normal": {
+                    "color": "#000ccc"
+                }
+            }
+        },
+        {
+            "name": "JavaSE",
+            "keyword": {},
+            "symbol": "circle",
+            "itemStyle": {
+                "normal": {
+                    "color": "#111ccc"
+                }
+            }
+        },
+        {
+            "name": "JavaEE",
+            "keyword": {},
+            "symbol": "circle",
+            "itemStyle": {
+                "normal": {
+                    "color": "#444ccc"
+                }
+            }
+        },
+        {
+            "name": "JavaScript",
+            "keyword": {},
+            "symbol": "circle",
+            "itemStyle": {
+                "normal": {
+                    "color": "#666ccc"
+                }
+            }
+        },
+        {
+            "name": "jQuery",
+            "keyword": {},
+            "symbol": "circle",
+            "itemStyle": {
+                "normal": {
+                    "color": "#999ccc"
+                }
+            }
+        }
+    ],
+    "nodes": [
+        {
+            "name": "Java",
+            "value": 1,
+            "category": 0,
+            "itemStyle": {
+                "normal": {
+                    "color": "#000ccc"
+                }
+            }
+        },
+        {
+            "name": "JavaSE",
+            "value": 1,
+            "category": 1,
+            "itemStyle": {
+                "normal": {
+                    "color": "#111ccc"
+                }
+            }
+        },
+        {
+            "name": "JavaEE",
+            "value": 1,
+            "category": 2,
+            "itemStyle": {
+                "normal": {
+                    "color": "#444ccc"
+                }
+            }
+        },
+        {
+            "name": "JavaScript",
+            "value": 1,
+            "category": 3,
+            "itemStyle": {
+                "normal": {
+                    "color": "#666ccc"
+                }
+            }
+        },
+        {
+            "name": "jQuery",
+            "value": 1,
+            "category": 4,
+            "itemStyle": {
+                "normal": {
+                    "color": "#999ccc"
+                }
+            }
+        },
+        {
+            "name": "jQuery2",
+            "value": 1,
+            "category": 4,
+            "itemStyle": {
+                "normal": {
+                    "color": "#aaaccc"
+                }
+            }
+        },
+        {
+            "name": "jQuery3",
+            "category": 4,
+            "itemStyle": {
+                "normal": {
+                    "color": "#bbbccc"
+                }
+            }
+        },
+        {
+            "name": "jQuery4",
+            "category": 4,
+            "itemStyle": {
+                "normal": {
+                    "color": "#aa44dd"
+                }
+            }
+        },
+        {
+            "name": "jQuery5",
+            "value": 2,
+            "category": 9,
+            "itemStyle": {
+                "normal": {
+                    "color": "#88dd11"
+                }
+            }
+        }
+    ],
+    "links": [
+        {
+            "source": 0,
+            "target": 1
+        },
+        {
+            "source": 0,
+            "target": 2
+        },
+        {
+            "source": 0,
+            "target": 3
+        },
+        {
+            "source": 3,
+            "target": 4
+        },
+        {
+            "source": 3,
+            "target": 5
+        },
+        {
+            "source": 3,
+            "target": 6
+        },
+        {
+            "source": 3,
+            "target": 7
+        },
+        {
+            "source": 3,
+            "target": 8
+        }
+    ]
+}

@@ -12,7 +12,40 @@ var ztrsConstants = {
     "form_enctype_file_upload": "multipart/form-data"
 };
 
+var ztrsUtil = {
+
+    xml: {
+        string2xml: function (strTxt) {
+            return $.string2xml(strTxt);
+        }
+    }
+
+};
+
 (function (jQuery) {
+
+    /**
+     * 解析字符串内容，转换成xml document对象
+     */
+    $.string2xml = function (strTxt) {
+
+        // for ie
+        if (window.ActiveXObject) {
+
+            var xmlObj = new ActiveXObject("Microsoft.XMLDOM");
+            xmlObj.async = "false";
+            xmlObj.loadXML(strTxt);
+            return xmlObj;
+
+        } else {    // other browser
+
+            var parser = new DOMParser();
+            var xmlObj = parser.parseFromString(strTxt, "text/xml");
+            return xmlObj;
+
+        }
+
+    },
 
     // 生成表单并提交
     $.generateAndSubmitForm = function (option) {

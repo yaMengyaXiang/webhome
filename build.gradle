@@ -77,4 +77,7 @@ dependencies {
 //    比freemarker更优秀的模板引擎
 //    compile group: 'com.ibeetl', name: 'beetl', version: '2.7.13'
 
+//   dom4j xml解析
+    compile group: 'dom4j', name: 'dom4j', version: '1.6.1'
+
 }

@@ -1,30 +1,20 @@
 package tech.zhetengrensheng.webhome.core.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONReader;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import tech.zhetengrensheng.webhome.core.entity.Article;
-import tech.zhetengrensheng.webhome.core.entity.Tag;
-import tech.zhetengrensheng.webhome.core.entity.User;
-import tech.zhetengrensheng.webhome.core.service.ArticleService;
-import tech.zhetengrensheng.webhome.core.service.TagService;
-import tech.zhetengrensheng.webhome.core.service.UserService;
-import tech.zhetengrensheng.webhome.core.util.Page;
-import tech.zhetengrensheng.webhome.core.util.PageNumberGenerator;
-import tech.zhetengrensheng.webhome.core.util.UrlUtil;
+import tech.zhetengrensheng.webhome.core.entity.*;
+import tech.zhetengrensheng.webhome.core.service.*;
+import tech.zhetengrensheng.webhome.core.util.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Enumeration;
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileReader;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Long on 2017/3/26.
@@ -41,6 +31,12 @@ public class UserController {
 
     @Resource
     private ArticleService articleService;
+
+    @Resource
+    private CategoryService categoryService;
+
+    @Resource
+    private NodeService nodeService;
 
     @RequestMapping("/validate.action")
     @ResponseBody
@@ -127,7 +123,7 @@ public class UserController {
             // 放入session，并设置生命周期
             session.setAttribute("currentLoginUser", user);
             // 一小时
-            session.setMaxInactiveInterval(1 * 60);
+            session.setMaxInactiveInterval(1 * 60 * 60);
 
             return "redirect:" + nextUri;
         }
@@ -141,6 +137,18 @@ public class UserController {
     public String toMyBackend(HttpServletRequest request) {
 
         return "user/user-backend.jsp";
+    }
+
+    @RequestMapping("/toMyZheTengLink.action")
+    public String toMyZheTengLink(HttpServletRequest request) {
+
+        List<Category> categories = categoryService.selectAll();
+        List<Node> nodes = nodeService.selectAll();
+
+        request.setAttribute("categories", categories);
+        request.setAttribute("nodes", nodes);
+
+        return "user/backend/zheteng-link.jsp";
     }
 
     @RequestMapping("/toMyBaseInfo.action")
@@ -240,6 +248,21 @@ public class UserController {
         }
 
         return "user/other-user-info.jsp";
+    }
+
+    @RequestMapping("/getZheTengLinkText.action")
+    @ResponseBody
+    public String getZheTengLinkText(HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("currentLoginUser");
+
+        String jsonFileUrl = request.getServletContext().getRealPath("/") + "static/data/1.json";
+
+        String jsonTxt = JsonUtil.readJson(new File(jsonFileUrl));
+
+        return jsonTxt;
+
     }
 
 }

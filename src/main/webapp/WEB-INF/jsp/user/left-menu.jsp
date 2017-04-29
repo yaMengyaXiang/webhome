@@ -48,8 +48,8 @@
             <div class="accordion-content" data-tab-content>
                 <ul id="left-menu-ul" class="bt-list-group" style="margin-left: 0;">
                     <li class="bt-list-group-item">
-                        <a href="javascript:void(0);" action="${pageContext.request.contextPath}/user/toMyBaseInfo.action">
-                            <i class="fa fa-address-card-o"></i>
+                        <a href="javascript:void(0);" action="${pageContext.request.contextPath}/user/toMyZheTengLink.action">
+                            <i class="fa fa-object-ungroup"></i>
                             我的折腾链
                         </a>
                     </li>

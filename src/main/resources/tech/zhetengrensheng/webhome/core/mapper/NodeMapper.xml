@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tech.zhetengrensheng.webhome.core.dao.NodeDao">
+
+    <resultMap id="BaseResultMap" type="tech.zhetengrensheng.webhome.core.entity.Node">
+        <id column="node_id" property="nodeId" jdbcType="INTEGER"/>
+        <result column="node_name" property="nodeName" jdbcType="VARCHAR"/>
+        <result column="node_description" property="nodeDescription" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="category_id" property="categoryId" jdbcType="INTEGER"/>
+        <result column="node_color" property="nodeColor" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    node_id, node_name, node_description, user_id, category_id, node_color
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from node
+        where node_id = #{nodeId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from node
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from node
+    where node_id = #{nodeId,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="tech.zhetengrensheng.webhome.core.entity.Node">
+        insert into node
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="nodeId != null">
+                node_id,
+            </if>
+            <if test="nodeName != null">
+                node_name,
+            </if>
+            <if test="nodeDescription != null">
+                node_description,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="categoryId != null">
+                category_id,
+            </if>
+            <if test="nodeColor != null">
+                node_color,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="nodeId != null">
+                #{nodeId,jdbcType=INTEGER},
+            </if>
+            <if test="nodeName != null">
+                #{nodeName,jdbcType=VARCHAR},
+            </if>
+            <if test="nodeDescription != null">
+                #{nodeDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=INTEGER},
+            </if>
+            <if test="nodeColor != null">
+                #{nodeColor,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="tech.zhetengrensheng.webhome.core.entity.Node">
+        update node
+        <set>
+            <if test="nodeName != null">
+                node_name = #{nodeName,jdbcType=VARCHAR},
+            </if>
+            <if test="nodeDescription != null">
+                node_description = #{nodeDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId,jdbcType=INTEGER},
+            </if>
+            <if test="nodeColor != null">
+                node_color = #{nodeColor,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where node_id = #{nodeId,jdbcType=INTEGER}
+    </update>
+
+</mapper>

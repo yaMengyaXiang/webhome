@@ -47,6 +47,15 @@
             window.location.href = url;
 
         });
+
+        $("#index-to-zheteng-link").unbind("click");
+        $("#index-to-zheteng-link").bind("click", function () {
+
+            var url = "${pageContext.request.contextPath}/user/toMyZheTengLink.action";
+
+            window.location.href = url;
+
+        });
     });
 
 </script>
@@ -65,7 +74,7 @@
                     <a href="${pageContext.request.contextPath}/">首页</a>
                 </li>
                 <li>
-                    <a href="#">我的折腾</a>
+                    <a id="index-to-zheteng-link" href="javascript:void(0);">我的折腾链</a>
                 </li>
                 <c:if test="${empty currentLoginUser}">
                     <li>
