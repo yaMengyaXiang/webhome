@@ -22,5 +22,15 @@ public interface Constants {
 	 * 分页按钮的最多数量，比如10表示10个按钮，第1页，第2页，...，第10页
 	 */
 	public static final Integer MAX_PAGE_NUM_SIZE = 10;
-	
+
+	/**
+	 * 折腾链数据文件的名称前缀
+	 */
+	public static final String ZHE_TENG_LINK_FILE_PREFIX = "zhetenglink_";
+
+	/**
+	 * 折腾链数据文件的目录路径，前面应该还有项目名，由request获取
+	 */
+	public static final String ZHE_TENG_LINK_FILE_DIR = "/static/data/zhetenglink/";
+
 }

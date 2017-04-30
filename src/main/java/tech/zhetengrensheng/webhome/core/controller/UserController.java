@@ -1,7 +1,6 @@
 package tech.zhetengrensheng.webhome.core.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONReader;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,7 +12,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.io.FileReader;
 import java.util.List;
 
 /**
@@ -93,7 +91,6 @@ public class UserController {
         session.removeAttribute("currentLoginUser");
 
         return "forward:/user/toLogin.action";
-//        return "forward:/login.jsp";
     }
 
     @RequestMapping("/login.action")
@@ -142,8 +139,11 @@ public class UserController {
     @RequestMapping("/toMyZheTengLink.action")
     public String toMyZheTengLink(HttpServletRequest request) {
 
-        List<Category> categories = categoryService.selectAll();
-        List<Node> nodes = nodeService.selectAll();
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("currentLoginUser");
+
+        List<Category> categories = categoryService.selectByUserId(user.getUserId());
+        List<Node> nodes = nodeService.selectByUserId(user.getUserId());
 
         request.setAttribute("categories", categories);
         request.setAttribute("nodes", nodes);
@@ -257,11 +257,29 @@ public class UserController {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("currentLoginUser");
 
-        String jsonFileUrl = request.getServletContext().getRealPath("/") + "static/data/1.json";
+        JSONObject jo = new JSONObject();
 
-        String jsonTxt = JsonUtil.readJson(new File(jsonFileUrl));
+        String latestFileName = user.getLatestFileName();
 
-        return jsonTxt;
+        if (latestFileName != null) {
+            String jsonFileDirectory = request.getSession().getServletContext().getRealPath("/") +
+                    Constants.ZHE_TENG_LINK_FILE_DIR + user.getUserId();
+
+            File file = new File(jsonFileDirectory, latestFileName);
+            if (file.exists()) {
+
+                String jsonTxt = JsonUtil.readJson(file);
+
+                jo.put("success", jsonTxt);
+
+                return jo.toJSONString();
+
+            }
+        }
+
+        jo.put("success", "false");
+
+        return jo.toJSONString();
 
     }
 

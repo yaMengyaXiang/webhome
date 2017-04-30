@@ -5,13 +5,12 @@
     <resultMap id="BaseResultMap" type="tech.zhetengrensheng.webhome.core.entity.Category">
         <id column="category_id" property="categoryId" jdbcType="INTEGER"/>
         <result column="category_name" property="categoryName" jdbcType="VARCHAR"/>
-        <result column="category_description" property="categoryDescription" jdbcType="VARCHAR"/>
         <result column="user_id" property="userId" jdbcType="INTEGER"/>
         <result column="category_color" property="categoryColor" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-     category_id, category_name, category_description, user_id, category_color
+     category_id, category_name, user_id, category_color
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -27,13 +26,20 @@
         from category
     </select>
 
+    <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from category
+        where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from category
         where category_id = #{categoryId,jdbcType=INTEGER}
     </delete>
 
 
-    <insert id="insert" parameterType="tech.zhetengrensheng.webhome.core.entity.Category">
+    <insert id="insert" parameterType="tech.zhetengrensheng.webhome.core.entity.Category" useGeneratedKeys="true" keyProperty="categoryId">
         insert into category
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="categoryId != null">
@@ -41,9 +47,6 @@
             </if>
             <if test="categoryName != null">
                 category_name,
-            </if>
-            <if test="categoryDescription != null">
-                category_description,
             </if>
             <if test="userId != null">
                 user_id,
@@ -59,9 +62,6 @@
             <if test="categoryName != null">
                 #{categoryName,jdbcType=VARCHAR},
             </if>
-            <if test="categoryDescription != null">
-                #{categoryDescription,jdbcType=VARCHAR},
-            </if>
             <if test="userId != null">
                 #{userId,jdbcType=INTEGER},
             </if>
@@ -76,9 +76,6 @@
         <set>
             <if test="categoryName != null">
                 category_name = #{categoryName,jdbcType=VARCHAR},
-            </if>
-            <if test="categoryDescription != null">
-                category_description = #{categoryDescription,jdbcType=VARCHAR},
             </if>
             <if test="userId != null">
                 user_id = #{userId,jdbcType=INTEGER},

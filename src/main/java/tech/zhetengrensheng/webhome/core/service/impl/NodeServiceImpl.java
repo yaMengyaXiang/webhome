@@ -42,6 +42,11 @@ public class NodeServiceImpl implements NodeService {
     }
 
     @Override
+    public List<Node> selectByUserId(Integer userId) {
+        return nodeDao.selectByUserId(userId);
+    }
+
+    @Override
     @Transactional
     public int update(Node record) {
         return nodeDao.update(record);

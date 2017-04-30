@@ -2,9 +2,16 @@ package tech.zhetengrensheng.webhome.core.util;/**
  * Created by Long on 2017-04-29.
  */
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONWriter;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 /**
@@ -43,5 +50,23 @@ public class JsonUtil {
 
         return jsonTxt.toString();
     }
+
+    public static void createJsonFile(String directory,Integer userId) throws Exception {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+        String format = sdf.format(new Date());
+        String fileName = format + "_" + userId;
+
+        File file = new File(directory, fileName);
+
+        if (!file.exists()) {
+            file.mkdirs();
+
+
+
+        }
+
+    }
+
 
 }

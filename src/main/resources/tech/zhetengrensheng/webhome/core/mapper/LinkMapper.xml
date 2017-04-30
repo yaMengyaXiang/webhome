@@ -24,7 +24,7 @@
         where link_id = #{linkId,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="tech.zhetengrensheng.webhome.core.entity.Link">
+    <insert id="insert" parameterType="tech.zhetengrensheng.webhome.core.entity.Link" useGeneratedKeys="true" keyProperty="linkId">
         insert into link
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="linkId != null">

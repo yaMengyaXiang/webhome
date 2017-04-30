@@ -20,6 +20,8 @@ public interface NodeService {
 
     List<Node> selectAll();
 
+    List<Node> selectByUserId(Integer userId);
+
     int update(Node record);
 
 }

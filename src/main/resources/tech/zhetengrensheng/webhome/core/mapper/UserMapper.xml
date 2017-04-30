@@ -9,10 +9,11 @@
         <result column="mailbox" property="mailbox" jdbcType="VARCHAR"/>
         <result column="description" property="description" jdbcType="VARCHAR"/>
         <result column="signature" property="signature" jdbcType="VARCHAR"/>
+        <result column="latest_file_name" property="latestFileName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        user_id, username, password, mailbox, description, signature
+        user_id, username, password, mailbox, description, signature, latest_file_name
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -48,6 +49,9 @@
             <if test="signature != null">
                 signature,
             </if>
+            <if test="latestFileName != null">
+                latest_file_name,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userId != null">
@@ -68,6 +72,9 @@
             <if test="signature != null">
                 #{signature,jdbcType=VARCHAR},
             </if>
+            <if test="latestFileName != null">
+                #{latestFileName,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
 
@@ -85,6 +92,9 @@
             </if>
             <if test="signature != null">
                 signature = #{signature,jdbcType=VARCHAR},
+            </if>
+            <if test="latestFileName != null">
+                latest_file_name = #{latestFileName,jdbcType=VARCHAR},
             </if>
         </set>
         <choose>

@@ -9,8 +9,6 @@ public class Node {
 
     private String nodeName;
 
-    private String nodeDescription;
-
     private Integer userId;
 
     private Integer categoryId;
@@ -31,14 +29,6 @@ public class Node {
 
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName == null ? null : nodeName.trim();
-    }
-
-    public String getNodeDescription() {
-        return nodeDescription;
-    }
-
-    public void setNodeDescription(String nodeDescription) {
-        this.nodeDescription = nodeDescription == null ? null : nodeDescription.trim();
     }
 
     public Integer getUserId() {

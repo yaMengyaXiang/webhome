@@ -14,6 +14,8 @@ public interface CategoryDao {
 
     List<Category> selectAll();
 
+    List<Category> selectByUserId(Integer userId);
+
     int update(Category record);
 
 }

@@ -17,16 +17,14 @@
 
 
 </head>
-<body style="overflow-y: scroll;">
+<body>
 
 <%@include file="/WEB-INF/jsp/common/header.jsp"%>
 
 <div class="row">
     <div class="padding-20-5-div">
 
-        <div class="medium-4 large-3 columns row-margin-bottom-10">
-            <%@include file="/WEB-INF/jsp/user/backend/link/left.jsp"%>
-        </div>
+        <%@include file="/WEB-INF/jsp/user/left-menu.jsp"%>
 
         <div id="mainContent" class="medium-8 large-9 columns">
 

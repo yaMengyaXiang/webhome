@@ -9,8 +9,6 @@ public class Category {
 
     private String categoryName;
 
-    private String categoryDescription;
-
     private Integer userId;
 
     private String categoryColor;
@@ -37,14 +35,6 @@ public class Category {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName == null ? null : categoryName.trim();
-    }
-
-    public String getCategoryDescription() {
-        return categoryDescription;
-    }
-
-    public void setCategoryDescription(String categoryDescription) {
-        this.categoryDescription = categoryDescription == null ? null : categoryDescription.trim();
     }
 
     public Integer getUserId() {

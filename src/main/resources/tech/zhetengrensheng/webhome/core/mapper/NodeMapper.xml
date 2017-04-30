@@ -5,14 +5,13 @@
     <resultMap id="BaseResultMap" type="tech.zhetengrensheng.webhome.core.entity.Node">
         <id column="node_id" property="nodeId" jdbcType="INTEGER"/>
         <result column="node_name" property="nodeName" jdbcType="VARCHAR"/>
-        <result column="node_description" property="nodeDescription" jdbcType="VARCHAR"/>
         <result column="user_id" property="userId" jdbcType="INTEGER"/>
         <result column="category_id" property="categoryId" jdbcType="INTEGER"/>
         <result column="node_color" property="nodeColor" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-    node_id, node_name, node_description, user_id, category_id, node_color
+    node_id, node_name, user_id, category_id, node_color
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -28,12 +27,19 @@
         from node
     </select>
 
+    <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from node
+        where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from node
     where node_id = #{nodeId,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="tech.zhetengrensheng.webhome.core.entity.Node">
+    <insert id="insert" parameterType="tech.zhetengrensheng.webhome.core.entity.Node" useGeneratedKeys="true" keyProperty="nodeId">
         insert into node
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="nodeId != null">
@@ -41,9 +47,6 @@
             </if>
             <if test="nodeName != null">
                 node_name,
-            </if>
-            <if test="nodeDescription != null">
-                node_description,
             </if>
             <if test="userId != null">
                 user_id,
@@ -62,9 +65,6 @@
             <if test="nodeName != null">
                 #{nodeName,jdbcType=VARCHAR},
             </if>
-            <if test="nodeDescription != null">
-                #{nodeDescription,jdbcType=VARCHAR},
-            </if>
             <if test="userId != null">
                 #{userId,jdbcType=INTEGER},
             </if>
@@ -82,9 +82,6 @@
         <set>
             <if test="nodeName != null">
                 node_name = #{nodeName,jdbcType=VARCHAR},
-            </if>
-            <if test="nodeDescription != null">
-                node_description = #{nodeDescription,jdbcType=VARCHAR},
             </if>
             <if test="userId != null">
                 user_id = #{userId,jdbcType=INTEGER},

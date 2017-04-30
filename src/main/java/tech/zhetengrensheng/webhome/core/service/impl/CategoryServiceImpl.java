@@ -42,6 +42,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> selectByUserId(Integer userId) {
+        return categoryDao.selectByUserId(userId);
+    }
+
+    @Override
     @Transactional
     public int update(Category record) {
         return categoryDao.update(record);

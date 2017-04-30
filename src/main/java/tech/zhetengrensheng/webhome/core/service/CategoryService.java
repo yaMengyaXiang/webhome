@@ -20,6 +20,8 @@ public interface CategoryService {
 
     List<Category> selectAll();
 
+    List<Category> selectByUserId(Integer userId);
+
     int update(Category record);
 
 }

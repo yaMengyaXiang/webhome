@@ -14,8 +14,17 @@ public class User implements Serializable {
     private String mailbox;     // 邮箱地址
     private String description; // 个人描述
     private String signature;   // 个性签名
+    private String latestFileName;  // 折腾链文件的名称
 
     public User() {
+    }
+
+    public String getLatestFileName() {
+        return latestFileName;
+    }
+
+    public void setLatestFileName(String latestFileName) {
+        this.latestFileName = latestFileName;
     }
 
     public Integer getUserId() {

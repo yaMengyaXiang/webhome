@@ -7,8 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<script src="http://cdn.cdnjs.net/jscolor/2.0.4/jscolor.min.js"></script>
-
 <script type="text/javascript">
 
     $(function () {
@@ -46,7 +44,7 @@
 
                     var param = {
                         "categoryName": categoryName,
-                        "categoryColor": categoryColor,
+                        "categoryColor": "#" + categoryColor,
                         "categoryDescription": categoryDescription,
                         "userId": userId
                     };
@@ -103,7 +101,7 @@
 
                     var param = {
                         "nodeName": nodeName,
-                        "nodeColor": nodeColor,
+                        "nodeColor": "#" + nodeColor,
                         "nodeDescription": nodeDescription,
                         "categoryId": categoryId,
                         "userId": userId
@@ -125,27 +123,49 @@
         $("#addLinkBtn").unbind("click");
         $("#addLinkBtn").bind("click", function () {
 
+            var sourceNodeId = $("select[name=sourceNodeId] option:selected").attr("value");
+            if (sourceNodeId == "") {
+                alert("请选择源节点！");
+                return;
+            }
+            var targetNodeId = $("select[name=targetNodeId] option:selected").attr("value");
+            if (targetNodeId == "") {
+                alert("请选择源节点！");
+                return;
+            }
+
+            var getCurrentUserIdUrl = "${pageContext.request.contextPath}/user/getCurrentUserId.action";
+
+            // 获取当前登录用户的id
+            $.post(getCurrentUserIdUrl, null, function (data) {
+                var json = jQuery.parseJSON(data);
+
+                var userId = json.userId;
+
+                if (userId == "null") {
+                    alert("亲，您还未登录呢");
+
+                } else {
+
+                    var url = "${pageContext.request.contextPath}/link/addLink.action";
+
+                    var param = {
+                        "sourceNodeId": sourceNodeId,
+                        "targetNodeId": targetNodeId,
+                        "userId": userId
+                    };
+
+                    $.post(url, param, function (data) {
+
+                        $("#mainContent").html(data);
+
+                    });
+
+                }
+            });
+
+
         });
-
-        function refreshCategory() {
-
-            var url = "${pageContext.request.contextPath}/category/showAllCategories.action";
-
-            $.post(url, null, function (data) {
-                $("#addNodeDiv").html(data);
-            });
-
-        }
-
-        function refreshNode() {
-
-            var url = "${pageContext.request.contextPath}/node/showAllNodes.action";
-
-            $.post(url, null, function (data) {
-                $("#addLinkDiv").html(data);
-            });
-
-        }
 
 
     });
@@ -176,7 +196,7 @@
                                 名称：<input type="text" name="categoryName">
                             </div>
                             <div class="medium-12 columns">
-                                颜色：<input class="jscolor" type="text" name="categoryColor">
+                                颜色：<input class="jscolor" type="text" value="000000" name="categoryColor">
                             </div>
                         </div>
                         <div class="row">
@@ -204,7 +224,7 @@
                                 名称：<input type="text" name="nodeName">
                             </div>
                             <div class="medium-12 columns">
-                                颜色：<input class="jscolor" type="text" name="nodeColor">
+                                颜色：<input class="jscolor" value="000000" type="text" name="nodeColor">
                             </div>
                             <div id="addNodeDiv" class="medium-12 columns">
                                 <%@include file="/WEB-INF/jsp/user/backend/link/node.jsp"%>
@@ -229,8 +249,15 @@
                         节点连接
                     </a>
 
-                    <div id="addLinkDiv" class="accordion-content" data-tab-content>
-                        <%@include file="/WEB-INF/jsp/user/backend/link/link.jsp"%>
+                    <div class="accordion-content" data-tab-content>
+                        <div id="addLinkDiv"  class="row">
+                            <%@include file="/WEB-INF/jsp/user/backend/link/link.jsp"%>
+                        </div>
+                        <div class="row">
+                            <div class="medium-12 columns">
+                                <button id="addLinkBtn" class="button">连接</button>
+                            </div>
+                        </div>
                     </div>
 
                 </li>
