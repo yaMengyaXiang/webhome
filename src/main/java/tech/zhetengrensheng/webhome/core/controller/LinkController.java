@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import tech.zhetengrensheng.webhome.core.entity.Link;
 import tech.zhetengrensheng.webhome.core.entity.User;
+import tech.zhetengrensheng.webhome.core.facade.ZheTengLinkFacade;
 import tech.zhetengrensheng.webhome.core.service.LinkService;
 import tech.zhetengrensheng.webhome.core.service.UserService;
 import tech.zhetengrensheng.webhome.core.util.Constants;
@@ -29,31 +30,22 @@ public class LinkController {
     @Resource
     private UserService userService;
 
-    @RequestMapping("/addLink.action")
-    public String addLink(Link link, HttpServletRequest request) {
+    @Resource
+    private ZheTengLinkFacade zheTengLinkFacade;
+
+    @RequestMapping("/addOrEditLink.action")
+    public String addOrEditLink(Link link, HttpServletRequest request) {
 
         try {
             Integer userId = link.getUserId();
 
-            if (link != null && link.getSourceNodeId() != null &&
+            if (link.getSourceNodeId() != null &&
                     link.getTargetNodeId() != null && userId != null) {
-
-                linkService.insert(link);
-
-                List<Link> links = new ArrayList<Link>();
-                links.add(link);
 
                 // 生成json数据文件
                 String jsonFileDirectory = request.getSession().getServletContext().getRealPath("/") + Constants.ZHE_TENG_LINK_FILE_DIR;
-                ZheTengLinkUtil.writeLinks(jsonFileDirectory, userId, links);
-                String latestFileName = ZheTengLinkUtil.writeJson(jsonFileDirectory, userId);
 
-                User user = userService.selectByPrimaryKey(userId);
-                user.setLatestFileName(latestFileName);
-                userService.update(user);
-
-                HttpSession session = request.getSession();
-                session.setAttribute("currentLoginUser", user);
+                zheTengLinkFacade.addOrEditLink(link, jsonFileDirectory, userId);
 
                 return "/user/backend/link/right.jsp";
 

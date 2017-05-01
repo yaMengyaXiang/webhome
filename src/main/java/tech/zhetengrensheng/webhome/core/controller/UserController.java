@@ -257,9 +257,13 @@ public class UserController {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("currentLoginUser");
 
+        User currentUser = userService.selectByPrimaryKey(user.getUserId());
+
         JSONObject jo = new JSONObject();
 
-        String latestFileName = user.getLatestFileName();
+        String latestFileName = currentUser.getLatestFileName();
+
+        session.setAttribute("currentLoginUser", currentUser);
 
         if (latestFileName != null) {
             String jsonFileDirectory = request.getSession().getServletContext().getRealPath("/") +

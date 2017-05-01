@@ -7,6 +7,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import tech.zhetengrensheng.webhome.core.entity.Category;
 import tech.zhetengrensheng.webhome.core.entity.User;
+import tech.zhetengrensheng.webhome.core.facade.ZheTengLinkFacade;
 import tech.zhetengrensheng.webhome.core.service.CategoryService;
 import tech.zhetengrensheng.webhome.core.service.UserService;
 import tech.zhetengrensheng.webhome.core.util.Constants;
@@ -32,31 +33,21 @@ public class CategoryController {
     @Resource
     private UserService userService;
 
-    @RequestMapping("/addCategory.action")
-    public String addCategory(Category category, HttpServletRequest request) {
+    @Resource
+    private ZheTengLinkFacade zheTengLinkFacade;
+
+    @RequestMapping("/addOrEditCategory.action")
+    public String addOrEditCategory(Category category, HttpServletRequest request) {
         try {
             Integer userId = category.getUserId();
 
-            if (category != null && userId != null &&
-                    !StringUtils.isEmpty(category.getCategoryName()) &&
-                    !StringUtils.isEmpty(category.getCategoryColor())) {
-
-                categoryService.insert(category);
-
-                List<Category> categories = new ArrayList<Category>();
-                categories.add(category);
+            if (userId != null && !StringUtils.isEmpty(category.getCategoryName())
+                    && !StringUtils.isEmpty(category.getCategoryColor())) {
 
                 // 生成json数据文件
                 String jsonFileDirectory = request.getSession().getServletContext().getRealPath("/") + Constants.ZHE_TENG_LINK_FILE_DIR;
-                ZheTengLinkUtil.writeCategories(jsonFileDirectory, userId, categories);
-                String latestFileName = ZheTengLinkUtil.writeJson(jsonFileDirectory, userId);
 
-                User user = userService.selectByPrimaryKey(userId);
-                user.setLatestFileName(latestFileName);
-                userService.update(user);
-
-                HttpSession session = request.getSession();
-                session.setAttribute("currentLoginUser", user);
+                zheTengLinkFacade.addOrEditCategory(category, jsonFileDirectory, userId);
 
                 return "/user/backend/link/right.jsp";
 
@@ -65,7 +56,7 @@ public class CategoryController {
 
         }
 
-        return "redirect:/login.jsp";
+        return null;
 
     }
 

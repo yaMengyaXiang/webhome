@@ -7,6 +7,7 @@ import tech.zhetengrensheng.webhome.core.entity.Link;
 import tech.zhetengrensheng.webhome.core.service.LinkService;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author Long
@@ -25,6 +26,11 @@ public class LinkServiceImpl implements LinkService{
     }
 
     @Override
+    public int deleteByNodeId(Integer nodeId) {
+        return linkDao.deleteByNodeId(nodeId);
+    }
+
+    @Override
     @Transactional
     public int insert(Link record) {
         return linkDao.insert(record);
@@ -33,6 +39,11 @@ public class LinkServiceImpl implements LinkService{
     @Override
     public Link selectByPrimaryKey(Integer linkId) {
         return linkDao.selectByPrimaryKey(linkId);
+    }
+
+    @Override
+    public List<Link> selectByUserId(Integer userId) {
+        return linkDao.selectByUserId(userId);
     }
 
     @Override

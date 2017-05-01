@@ -19,9 +19,13 @@
 <script type="text/javascript">
 
     var zhetengLinkJson = "";
-    var nodeId = "";
-    var nodeIndex = "";
-    var nodeName = "";
+    var currentNodeId = "";
+    var currentNodeIndex = "";
+    var currentNodeName = "";
+    var keepNodeId = false;
+
+    var currentCategoryId = "";
+    var keepCategoryId = false;
 
     function resizeMain() {
         var width = $("#mainContent").width();
@@ -48,7 +52,7 @@
         var url = "${pageContext.request.contextPath}/user/getZheTengLinkText.action";
 
         $.post(url, null, function (data) {
-
+            console.log(data);
             // 返回的是json格式的字符串，注意！！！此处的json变量仅仅是个字符串，不是json对象
             var json = data.success;
             myChart.hideLoading();
@@ -102,19 +106,22 @@
 
         myChart.on("mouseover", function(params) {
             var index = params.dataIndex;
-            nodeIndex = index;
-            nodeId = zhetengLinkJson.nodes[index].id;
-            nodeName = params.name;
+            currentNodeIndex = index;
+            currentNodeId = zhetengLinkJson.nodes[index].id;
+            currentNodeName = params.name;
+            console.log("myChart mouseover, currentNodeId: " + currentNodeId);
 
         });
 
         myChart.on("mouseout", function(params) {
 
-            var contextMenuVisable = ($(".context-menu-list").css("display"));
+            console.log("myChart mouseout, currentNodeId: " + currentNodeId);
+
+            var contextMenuVisable = $(".context-menu-list").css("display");
             if (contextMenuVisable == "none") {
-                nodeIndex = "";
-                nodeId = "";
-                nodeName = "";
+                currentNodeIndex = "";
+                currentNodeId = "";
+                currentNodeName = "";
             }
         });
 
@@ -135,57 +142,91 @@
         $.contextMenu({
             selector: '.context-menu-one',
             callback: function (key, options) {
-                if (key == "edit") {
-                    console.log(nodeId);
+                if (key == "addCategory") {
 
-                    if (nodeId != "") {
+                    keepCategoryId = false;
+                    $("#addCategoryBtn").trigger("click");
 
-                        console.log(zhetengLinkJson);
-                        console.log(nodeIndex);
-                        var node = zhetengLinkJson.nodes[nodeIndex];
-                        console.log(node);
+                } else if (key == "editCategory") {
+
+                    if (currentCategoryId != "") {
+                        keepCategoryId = true;
+                        $("#editCategoryBtn").trigger("click");
+                    }
+
+                } else if (key == "deleteCategory") {
+
+                    if (currentCategoryId != "") {
+                        keepCategoryId = true;
+                        $("#deleteCategoryBtn").trigger("click");
+                    }
+
+                } else if (key == "editNode") {
+
+                    console.log("currentNodeId: " + currentNodeId);
+                    if (currentNodeId != "") {
+
+
+                        var node = zhetengLinkJson.nodes[currentNodeIndex];
                         var categoryIndex = node.category;
                         var categoryId = zhetengLinkJson.categories[categoryIndex].id;
                         var color = node.itemStyle.normal.color;
 
-                        console.log(categoryId);
-                        console.log(color);
-
-                        $("#editNodeName").val(nodeName);
+                        $("#editNodeName").val(currentNodeName);
                         $("#editNodeColor").attr("value", color);
                         $("#editCategoryId").children("option[value=" + categoryId + "]").attr("selected", "selected");
 
-                        $("#editBtn").trigger("click");
+                        keepNodeId = true;
+                        $("#editNodeBtn").trigger("click");
                     }
 
-                } else if (key == "delete") {
-                    console.log(nodeId);
-                    if (nodeId != "") {
-                        $("#deleteBtn").trigger("click");
+                } else if (key == "deleteNode") {
+                    console.log(currentNodeId);
+                    if (currentNodeId != "") {
+                        keepNodeId = true;
+                        $("#deleteNodeBtn").trigger("click");
                     }
 
-                } else if (key == "add") {
+                } else if (key == "addNode") {
 
-                    $("#addBtn").trigger("click");
+                    keepNodeId = false;
+                    $("#addNodeBtn").trigger("click");
 
                 }
             },
             events: {
                 hide: function (options) {
-                    nodeId = "";
+                    console.log("context menu hide, keepNodeId: " + keepNodeId);
+                    if (!keepNodeId) {
+                        currentNodeId = "";
+                    }
+                    console.log("context menu hide, currentNodeId: " + currentNodeId);
                 }
             },
             items: {
-                "add": {
-                    name: "新增",
+                "addCategory": {
+                    name: "新增类目",
                     icon: "add"
                 },
-                "edit": {
-                    name: "编辑",
+                "editCategory": {
+                    name: "编辑类目",
                     icon: "edit"
                 },
-                "delete": {
-                    name: "删除",
+                "deleteCategory": {
+                    name: "删除类目",
+                    icon: "delete"
+                },
+                "sep0": "---------",
+                "addNode": {
+                    name: "新增节点",
+                    icon: "add"
+                },
+                "editNode": {
+                    name: "编辑节点",
+                    icon: "edit"
+                },
+                "deleteNode": {
+                    name: "删除节点",
                     icon: "delete"
                 },
                 "sep1": "---------",
@@ -198,6 +239,24 @@
             }
         });
 
+
+        $('#addCategoryColor').colpick({
+            colorScheme:'dark',
+            submit: false,
+            styles: {'z-index': 50000},
+            onChange:function(hsb,hex,rgb,el,bySetColor) {
+                $(el).val('#'+hex);
+            }
+        });
+
+        $('#editCategoryColor').colpick({
+            colorScheme:'dark',
+            submit: false,
+            styles: {'z-index': 50000},
+            onChange:function(hsb,hex,rgb,el,bySetColor) {
+                $(el).val('#'+hex);
+            }
+        });
 
         $('#addNodeColor').colpick({
             colorScheme:'dark',
@@ -217,7 +276,6 @@
             }
         });
 
-
     });
 
 
@@ -225,24 +283,19 @@
         $("#" + modalId + " > button:first").trigger("click");
     }
 
-    function addNodeToSubmit(submitFormId) {
-
+    function addOrEditCategory(submitFormId) {
         var $form = $("#" + submitFormId);
 
-        var nodeName = $form.find(":text[name=nodeName]").val();
-        if (nodeName == "") {
-            alert("请填写节点名称！");
-            return;
-        }
-        var nodeColor = $form.find(":text[name=nodeColor]").val();
-        if (nodeColor == "") {
-            alert("请选择颜色！");
-            return;
-        }
+        console.log($form);
 
-        var categoryId = $form.find("select[name=categoryId] option:selected").attr("value");
-        if (categoryId == "") {
-            alert("请选择类目！");
+        var categoryName = $form.children(":text[name=categoryName]").val();
+        if (categoryName == "") {
+            alert("请填写类目名称！");
+            return;
+        }
+        var categoryColor = $form.children(":text[name=categoryColor]").val();
+        if (categoryColor == "") {
+            alert("请选择颜色！");
             return;
         }
 
@@ -261,15 +314,22 @@
 
                 var url = $form.attr("action");
 
+                var modalId = "addCategoryBtn";
+
                 var param = {
-                    "nodeName": nodeName,
-                    "nodeColor": "#" + nodeColor,
-                    "categoryId": categoryId,
+                    "categoryName": categoryName,
+                    "categoryColor": categoryColor,
                     "userId": userId
                 };
 
+                if (currentNodeId != "") {
+                    param.categoryId = currentNodeId;
+                    modalId = "editCategoryBtn";
+                }
+
                 $.post(url, param, function (data) {
 
+                    $("#" + modalId).trigger("click");
                     $("#mainContent").html(data);
 
                     refreshNode();
@@ -281,13 +341,12 @@
 
     }
 
+
     function addOrEditNode(submitFormId) {
         var $form = $("#" + submitFormId);
 
-        alert($form);
         console.log($form);
 
-//        var nodeName = $form.find(":text[name=nodeName]").val();
         var nodeName = $form.children(":text[name=nodeName]").val();
         if (nodeName == "") {
             alert("请填写节点名称！");
@@ -320,6 +379,8 @@
 
                 var url = $form.attr("action");
 
+                var modalId = "addNodeBtn";
+
                 var param = {
                     "nodeName": nodeName,
                     "nodeColor": nodeColor,
@@ -327,12 +388,14 @@
                     "userId": userId
                 };
 
-                if (nodeId != "") {
-                    param.nodeId = nodeId;
+                if (currentNodeId != "") {
+                    param.nodeId = currentNodeId;
+                    modalId = "editNodeBtn";
                 }
 
                 $.post(url, param, function (data) {
 
+                    $("#" + modalId).trigger("click");
                     $("#mainContent").html(data);
 
                     refreshNode();
@@ -342,75 +405,23 @@
             }
         });
 
-    }
-
-    function editNodeToSubmit(submitFormId) {
-        var $form = $("#" + submitFormId);
-
-        var nodeName = $form.find(":text[name=nodeName]").val();
-        if (nodeName == "") {
-            alert("请填写节点名称！");
-            return;
-        }
-        var nodeColor = $form.find(":text[name=nodeColor]").val();
-        if (nodeColor == "") {
-            alert("请选择颜色！");
-            return;
-        }
-
-        var categoryId = $form.find("select[name=categoryId] option:selected").attr("value");
-        if (categoryId == "") {
-            alert("请选择类目！");
-            return;
-        }
-
-        var getCurrentUserIdUrl = "${pageContext.request.contextPath}/user/getCurrentUserId.action";
-
-        // 获取当前登录用户的id
-        $.post(getCurrentUserIdUrl, null, function (data) {
-            var json = jQuery.parseJSON(data);
-
-            var userId = json.userId;
-
-            if (userId == "null") {
-                alert("亲，您还未登录呢");
-
-            } else {
-
-                var url = $form.attr("action");
-
-                var param = {
-                    "nodeName": nodeName,
-                    "nodeColor": "#" + nodeColor,
-                    "categoryId": categoryId,
-                    "userId": userId
-                };
-
-                $.post(url, param, function (data) {
-
-                    $("#mainContent").html(data);
-
-                    refreshNode();
-
-                });
-
-            }
-        });
     }
 
     function deleteNodeToSubmit(linkObj) {
-        if (nodeId == "") {
+        console.log(currentNodeId);
+        if (currentNodeId == "") {
             return;
         }
 
         var url = $(linkObj).attr("url");
 
         var param = {
-            "nodeId": nodeId
+            "nodeId": currentNodeId
         };
 
         $.post(url, param, function (data) {
 
+            $("#deleteNodeBtn").trigger("click");
             $("#mainContent").html(data);
 
             refreshNode();
@@ -452,18 +463,108 @@
 
         <div class="accordion-content" data-tab-content>
 
-            <div class="context-menu-one btn btn-neutral" id="main" style="height: 450px; margin: 0 auto;" ></div>
+            <div class="context-menu-one btn btn-neutral" id="main" style="height: 420px; margin: 0 auto;" ></div>
 
-            <!-- 按钮触发模态框 -->
-            <button id="addBtn" style="display: none;" data-toggle="addModal"></button>
+            <button id="addCategoryBtn" style="display: none;" data-toggle="addCategoryModal"></button>
 
-            <!-- 按钮触发模态框 -->
-            <button id="editBtn" style="display: none;" data-toggle="editModal"></button>
+            <button id="editCategoryBtn" style="display: none;" data-toggle="editCategoryModal"></button>
 
-            <button id="deleteBtn" style="display: none;" data-toggle="deleteModal"></button>
+            <button id="deleteCategoryBtn" style="display: none;" data-toggle="deleteCategoryModal"></button>
 
-            <div class="reveal" id="addModal" data-reveal data-close-on-click="true"
-                 data-animation-in="scale-in-up" data-animation-out="scale-out-down">
+            <div class="tiny reveal" id="addCategoryModal" data-reveal data-close-on-click="true"
+                 data-animation-in="slide-in-down">
+                <%-- 新增类目 --%>
+                <ul class="accordion" data-accordion data-allow-all-closed="true">
+                    <li class="accordion-item is-active" data-accordion-item>
+                        <a href="javascript:void(0);" class="accordion-title bg-light-blue">
+                            <i class="fa fa-tags"></i> 新增类目
+                        </a>
+                        <div class="accordion-content" data-tab-content>
+                            <form id="addCategoryForm" action="${pageContext.request.contextPath}/category/addOrEditCategory.action">
+                                类目名称：<input type="text" name="categoryName">
+                                颜色：<input id="addCategoryColor" value="#000000" type="text" name="categoryColor">
+
+                                <div style="width: 100%; text-align: right;">
+                                    <a href="javascript:void(0);" onclick="cancel('addCategoryModal')" class="button" style="margin-bottom: 0;" >取消</a>
+                                    <a href="javascript:void(0);" onclick="addOrEditCategory('addCategoryForm')" class="button" style="margin-bottom: 0;" >添加</a>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+
+                <button class="close-button" data-close aria-label="Close" type="button">
+                    <%--<span aria-hidden="true">&times;</span>--%>
+                </button>
+
+            </div>
+
+            <div class="tiny reveal" id="editCategoryModal" data-reveal data-close-on-click="true"
+                 data-animation-in="scale-in-up">
+                <%--编辑类目--%>
+                <ul class="accordion" data-accordion data-allow-all-closed="true">
+                    <li class="accordion-item is-active" data-accordion-item>
+                        <a href="javascript:void(0);" class="accordion-title bg-light-blue">
+                            <i class="fa fa-tags"></i>
+                            编辑类目
+                        </a>
+                        <div class="accordion-content" data-tab-content>
+                            <form id="editCategoryForm" action="${pageContext.request.contextPath}/category/addOrEditCategory.action">
+                                类目名称：<input id="editCategoryName" type="text" name="categoryName">
+                                颜色：<input id="editCategoryColor" value="#000000" type="text" name="categoryColor">
+
+                                <div style="width: 100%; text-align: right;">
+                                    <a href="javascript:void(0);" onclick="cancel('editCategoryModal')" class="button" style="margin-bottom: 0;" >取消</a>
+                                    <a href="javascript:void(0);" onclick="addOrEditCategory('editCategoryForm')" class="button" style="margin-bottom: 0;" >提交更改</a>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+
+                <button class="close-button" data-close aria-label="Close" type="button">
+                    <%--<span aria-hidden="true">&times;</span>--%>
+                </button>
+
+            </div>
+
+            <div class="tiny reveal" id="deleteCategoryModal" data-reveal data-close-on-click="true"
+                 data-animation-in="scale-in-up">
+
+                <ul class="accordion" data-accordion data-allow-all-closed="true">
+                    <li class="accordion-item is-active" data-accordion-item>
+                        <a href="javascript:void(0);" class="accordion-title bg-light-blue">
+                            <i class="fa fa-tags"></i>
+                            删除类目
+                        </a>
+                        <div class="accordion-content" data-tab-content>
+                            <form id="deleteCategoryForm">
+                                <label style="font-size: 16px; color: red;">确定要删除该类目吗 ?</label>
+                                <div style="width: 100%; text-align: right;">
+                                    <a href="javascript:void(0);" onclick="cancel('deleteCategoryModal')" class="button" style="margin-bottom: 0;" >取消</a>
+                                    <a url="${pageContext.request.contextPath}/category/deleteCategory.action"
+                                       href="javascript:void(0);" onclick="deleteCategoryToSubmit(this)" class="button" style="margin-bottom: 0;" >确定</a>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+
+                <button class="close-button" data-close aria-label="Close" type="button">
+                    <%--<span aria-hidden="true">&times;</span>--%>
+                </button>
+            </div>
+
+
+
+            <button id="addNodeBtn" style="display: none;" data-toggle="addNodeModal"></button>
+
+            <button id="editNodeBtn" style="display: none;" data-toggle="editNodeModal"></button>
+
+            <button id="deleteNodeBtn" style="display: none;" data-toggle="deleteNodeModal"></button>
+
+            <div class="tiny reveal" id="addNodeModal" data-reveal data-close-on-click="true"
+                 data-animation-in="scale-in-up">
                 <%-- 新增节点 --%>
                 <ul class="accordion" data-accordion data-allow-all-closed="true">
                     <li class="accordion-item is-active" data-accordion-item>
@@ -473,7 +574,7 @@
                         <div class="accordion-content" data-tab-content>
                             <form id="addNodeForm" action="${pageContext.request.contextPath}/node/addOrEditNode.action">
                                 节点名称：<input type="text" name="nodeName">
-                                颜色：<input id="addNodeColor" value="ddffdd" type="text" name="nodeColor">
+                                颜色：<input id="addNodeColor" value="#000000" type="text" name="nodeColor">
                                 所属类目：
                                 <select name="categoryId">
                                     <option value="">请选择</option>
@@ -483,7 +584,7 @@
                                 </select>
 
                                 <div style="width: 100%; text-align: right;">
-                                    <a href="javascript:void(0);" onclick="cancel('addModal')" class="button" style="margin-bottom: 0;" >取消</a>
+                                    <a href="javascript:void(0);" onclick="cancel('addNodeModal')" class="button" style="margin-bottom: 0;" >取消</a>
                                     <a href="javascript:void(0);" onclick="addOrEditNode('addNodeForm')" class="button" style="margin-bottom: 0;" >添加</a>
                                 </div>
                             </form>
@@ -497,8 +598,8 @@
 
             </div>
 
-            <div class="reveal" id="editModal" data-reveal data-close-on-click="true"
-                 data-animation-in="scale-in-up" data-animation-out="scale-out-down">
+            <div class="tiny reveal" id="editNodeModal" data-reveal data-close-on-click="true"
+                 data-animation-in="scale-in-up">
                 <%--编辑节点--%>
                 <ul class="accordion" data-accordion data-allow-all-closed="true">
                     <li class="accordion-item is-active" data-accordion-item>
@@ -509,7 +610,7 @@
                         <div class="accordion-content" data-tab-content>
                             <form id="editNodeForm" action="${pageContext.request.contextPath}/node/addOrEditNode.action">
                                 节点名称：<input id="editNodeName" type="text" name="nodeName">
-                                颜色：<input id="editNodeColor" value="" type="text" name="nodeColor">
+                                颜色：<input id="editNodeColor" value="#000000" type="text" name="nodeColor">
                                 所属类目：
                                 <select id="editCategoryId" name="categoryId">
                                     <option value="">请选择</option>
@@ -519,7 +620,7 @@
                                 </select>
 
                                 <div style="width: 100%; text-align: right;">
-                                    <a href="javascript:void(0);" onclick="cancel('editModal')" class="button" style="margin-bottom: 0;" >取消</a>
+                                    <a href="javascript:void(0);" onclick="cancel('editNodeModal')" class="button" style="margin-bottom: 0;" >取消</a>
                                     <a href="javascript:void(0);" onclick="addOrEditNode('editNodeForm')" class="button" style="margin-bottom: 0;" >提交更改</a>
                                 </div>
                             </form>
@@ -533,8 +634,8 @@
 
             </div>
 
-            <div class="reveal" id="deleteModal" data-reveal data-close-on-click="true"
-                 data-animation-in="scale-in-up" data-animation-out="scale-out-down">
+            <div class="tiny reveal" id="deleteNodeModal" data-reveal data-close-on-click="true"
+                 data-animation-in="scale-in-up">
 
                 <ul class="accordion" data-accordion data-allow-all-closed="true">
                     <li class="accordion-item is-active" data-accordion-item>
@@ -546,7 +647,7 @@
                             <form id="deleteNodeForm">
                                 <label style="font-size: 16px; color: red;">确定要删除该节点吗 ?</label>
                                 <div style="width: 100%; text-align: right;">
-                                    <a href="javascript:void(0);" onclick="cancel('deleteModal')" class="button" style="margin-bottom: 0;" >取消</a>
+                                    <a href="javascript:void(0);" onclick="cancel('deleteNodeModal')" class="button" style="margin-bottom: 0;" >取消</a>
                                     <a url="${pageContext.request.contextPath}/node/deleteNode.action"
                                        href="javascript:void(0);" onclick="deleteNodeToSubmit(this)" class="button" style="margin-bottom: 0;" >确定</a>
                                 </div>

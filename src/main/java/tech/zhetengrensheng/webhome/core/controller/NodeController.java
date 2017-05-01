@@ -5,15 +5,14 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import tech.zhetengrensheng.webhome.core.entity.Node;
 import tech.zhetengrensheng.webhome.core.entity.User;
+import tech.zhetengrensheng.webhome.core.facade.ZheTengLinkFacade;
 import tech.zhetengrensheng.webhome.core.service.NodeService;
 import tech.zhetengrensheng.webhome.core.service.UserService;
 import tech.zhetengrensheng.webhome.core.util.Constants;
-import tech.zhetengrensheng.webhome.core.util.ZheTengLinkUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,32 +29,22 @@ public class NodeController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private ZheTengLinkFacade zheTengLinkFacade;
+
     @RequestMapping("/addOrEditNode.action")
     public String addOrEditNode(Node node, HttpServletRequest request) {
 
         try {
             Integer userId = node.getUserId();
 
-            if (node != null && userId != null && node.getCategoryId() != null &&
-                    !StringUtils.isEmpty(node.getNodeName()) &&
-                    !StringUtils.isEmpty(node.getNodeColor())) {
-
-                nodeService.insert(node);
-
-                List<Node> nodes = new ArrayList<Node>();
-                nodes.add(node);
+            if (userId != null && !StringUtils.isEmpty(node.getNodeName())
+                    && !StringUtils.isEmpty(node.getNodeColor())) {
 
                 // 生成json数据文件
                 String jsonFileDirectory = request.getSession().getServletContext().getRealPath("/") + Constants.ZHE_TENG_LINK_FILE_DIR;
-                ZheTengLinkUtil.writeNodes(jsonFileDirectory, userId, nodes);
-                String latestFileName = ZheTengLinkUtil.writeJson(jsonFileDirectory, userId);
 
-                User user = userService.selectByPrimaryKey(userId);
-                user.setLatestFileName(latestFileName);
-                userService.update(user);
-
-                HttpSession session = request.getSession();
-                session.setAttribute("currentLoginUser", user);
+                zheTengLinkFacade.addOrEditNode(node, jsonFileDirectory, userId);
 
                 return "/user/backend/link/right.jsp";
 
@@ -80,11 +69,19 @@ public class NodeController {
     }
 
     @RequestMapping("/deleteNode.action")
-    public String deleteNode(Integer nodeId) {
+    public String deleteNode(Integer nodeId, HttpServletRequest request) {
 
         try {
             if (nodeId != null) {
-                nodeService.deleteByPrimaryKey(nodeId);
+
+                // 生成json数据文件
+                String jsonFileDirectory = request.getSession().getServletContext().getRealPath("/") + Constants.ZHE_TENG_LINK_FILE_DIR;
+
+                HttpSession session = request.getSession(false);
+                User user = (User) session.getAttribute("currentLoginUser");
+
+                zheTengLinkFacade.deleteNodeById(nodeId, jsonFileDirectory, user.getUserId());
+
             }
 
             return "/user/backend/link/right.jsp";
