@@ -8,6 +8,7 @@ import tech.zhetengrensheng.webhome.core.service.LinkService;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Long
@@ -44,6 +45,11 @@ public class LinkServiceImpl implements LinkService{
     @Override
     public List<Link> selectByUserId(Integer userId) {
         return linkDao.selectByUserId(userId);
+    }
+
+    @Override
+    public List<Link> selectCheckForInsert(Map<String, Integer> map) {
+        return linkDao.selectCheckForInsert(map);
     }
 
     @Override

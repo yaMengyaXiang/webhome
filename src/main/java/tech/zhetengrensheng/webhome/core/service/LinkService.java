@@ -5,6 +5,7 @@ package tech.zhetengrensheng.webhome.core.service;/**
 import tech.zhetengrensheng.webhome.core.entity.Link;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Long
@@ -21,6 +22,8 @@ public interface LinkService {
     Link selectByPrimaryKey(Integer linkId);
 
     List<Link> selectByUserId(Integer userId);
+
+    List<Link> selectCheckForInsert(Map<String, Integer> map);
 
     int update(Link record);
 

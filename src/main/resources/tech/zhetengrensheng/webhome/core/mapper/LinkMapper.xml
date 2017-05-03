@@ -26,6 +26,16 @@
         where user_id = #{userId,jdbcType=INTEGER}
     </select>
 
+    <select id="selectCheckForInsert" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from link
+        where
+          source_node_id = #{sourceNodeId,jdbcType=INTEGER} and target_node_id = #{targetNodeId,jdbcType=INTEGER}
+	      or
+          source_node_id = #{targetNodeId,jdbcType=INTEGER} and target_node_id = #{sourceNodeId,jdbcType=INTEGER}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from link
         where link_id = #{linkId,jdbcType=INTEGER}

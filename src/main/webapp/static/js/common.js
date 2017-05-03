@@ -155,10 +155,14 @@ var common = {
         if ($linkObj.css("cursor") == "not-allowed") {
             return;
         }
+
+        window.location.href = url;
+        /*
         // ajax请求
         $.post(url, null, function(data) {
             $("#mainContent").html(data);
         });
+        */
     }
 
 };

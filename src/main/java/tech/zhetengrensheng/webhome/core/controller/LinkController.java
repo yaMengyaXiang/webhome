@@ -54,7 +54,27 @@ public class LinkController {
 
         }
 
-        return null;
+        return "/user/backend/link/right.jsp";
+
+    }
+
+
+    @RequestMapping("/deleteLink.action")
+    public String deleteLink(Integer linkId, Integer userId, HttpServletRequest request) {
+
+        try {
+
+            // 生成json数据文件
+            String jsonFileDirectory = request.getSession().getServletContext().getRealPath("/") + Constants.ZHE_TENG_LINK_FILE_DIR;
+
+            zheTengLinkFacade.deleteLinkById(linkId, jsonFileDirectory, userId);
+
+        } catch (Exception e) {
+
+        }
+
+        return "/user/backend/link/right.jsp";
+
     }
 
 }

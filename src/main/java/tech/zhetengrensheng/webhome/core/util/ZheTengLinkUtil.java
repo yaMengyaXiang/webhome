@@ -125,7 +125,8 @@ public class ZheTengLinkUtil {
         try {
             String line;
             // 读取临时文件内容
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(new FileInputStream(file), "UTF-8"));
 
             int i = 0;
             while ((line = br.readLine()) != null) {
@@ -156,7 +157,8 @@ public class ZheTengLinkUtil {
 
         File file = getTargetTmpFile(CATEGORY);
 
-        BufferedWriter bw = new BufferedWriter(new FileWriter(file, !clearToWrite));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(file, !clearToWrite), "UTF-8"));
 
         if (categories != null && !categories.isEmpty()) {
 
@@ -210,7 +212,8 @@ public class ZheTengLinkUtil {
 
         File file = getTargetTmpFile(NODE);
 
-        BufferedWriter bw = new BufferedWriter(new FileWriter(file, !clearToWrite));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(file, !clearToWrite), "UTF-8"));
 
         if (nodes != null && !nodes.isEmpty()) {
 
@@ -268,7 +271,8 @@ public class ZheTengLinkUtil {
 
         File file = getTargetTmpFile(LINK);
 
-        BufferedWriter bw = new BufferedWriter(new FileWriter(file, !clearToWrite));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(file, !clearToWrite), "UTF-8"));
 
         if (links != null && !links.isEmpty()) {
 
@@ -287,6 +291,8 @@ public class ZheTengLinkUtil {
                 int targetNodeIdIndex = getNodeIdIndex(targetNodeId);
 
                 bw.append("{");
+                bw.append("\"id\":").append(link.getLinkId() + "");
+                bw.append(",");
                 bw.append("\"source\":").append(sourceNodeIdIndex + "");
                 bw.append(",");
                 bw.append("\"target\":").append(targetNodeIdIndex + "");
@@ -314,8 +320,10 @@ public class ZheTengLinkUtil {
     private static void writeFileContent(BufferedWriter bw, File targetFile) {
         try {
             String line;
+
             // 读取临时文件内容
-            BufferedReader br = new BufferedReader(new FileReader(targetFile));
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(new FileInputStream(targetFile), "UTF-8"));
 
             while ((line = br.readLine()) != null) {
                 bw.write(line);
@@ -346,7 +354,9 @@ public class ZheTengLinkUtil {
         File file = new File(targetDir, jsonFileName);
 
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(file), "UTF-8"));
 
             bw.write("{");
             bw.write("\"type\": \"force\"");

@@ -56,7 +56,7 @@ public class CategoryController {
 
         }
 
-        return null;
+        return "/user/backend/link/right.jsp";
 
     }
 
@@ -71,6 +71,26 @@ public class CategoryController {
         request.setAttribute("categories", categories);
 
         return "/user/backend/link/node.jsp";
+    }
+
+    @RequestMapping("/deleteCategory.action")
+    public String deleteCategory(Integer categoryId, Integer userId, HttpServletRequest request) {
+
+        try {
+            if (categoryId != null && userId != null) {
+
+                // 生成json数据文件
+                String jsonFileDirectory = request.getSession().getServletContext().getRealPath("/") + Constants.ZHE_TENG_LINK_FILE_DIR;
+
+                zheTengLinkFacade.deleteCategoryById(categoryId, jsonFileDirectory, userId);
+
+                return "/user/backend/link/right.jsp";
+            }
+        } catch (Exception e) {
+
+        }
+
+        return "/user/backend/link/right.jsp";
     }
 
 }

@@ -49,8 +49,8 @@ public class ArticleController {
     @Resource
     private UserBehaviorFacade userBehaviorFacade;
 
-    @RequestMapping("/getArticleById.action")
-    public String getArticleById(Long articleId, HttpServletRequest request) {
+    @RequestMapping("/editArticleById.action")
+    public String editArticleById(Long articleId, HttpServletRequest request) {
 
         try {
             HttpSession session = request.getSession(false);

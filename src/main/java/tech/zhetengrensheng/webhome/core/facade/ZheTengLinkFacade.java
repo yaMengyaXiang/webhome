@@ -1,5 +1,6 @@
 package tech.zhetengrensheng.webhome.core.facade;
 
+import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.stereotype.Component;
 import tech.zhetengrensheng.webhome.core.entity.Category;
 import tech.zhetengrensheng.webhome.core.entity.Link;
@@ -13,7 +14,9 @@ import tech.zhetengrensheng.webhome.core.util.ZheTengLinkUtil;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 折腾链操作的一个门面，降低折腾链的相关service的耦合性
@@ -118,6 +121,14 @@ public class ZheTengLinkFacade {
 
         } else {
             // save
+            Map<String, Integer> map = new HashMap<String, Integer>();
+            map.put("sourceNodeId", link.getSourceNodeId());
+            map.put("targetNodeId", link.getTargetNodeId());
+
+            List<Link> linksList = linkService.selectCheckForInsert(map);
+            if (linksList.size() > 0) {
+                return ;
+            }
             linkService.insert(link);
 
             // 不重新查询，直接添加

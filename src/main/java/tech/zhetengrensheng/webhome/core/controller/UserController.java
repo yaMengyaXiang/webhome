@@ -252,18 +252,13 @@ public class UserController {
 
     @RequestMapping("/getZheTengLinkText.action")
     @ResponseBody
-    public String getZheTengLinkText(HttpServletRequest request) {
+    public String getZheTengLinkText(Integer userId, HttpServletRequest request) {
 
-        HttpSession session = request.getSession(false);
-        User user = (User) session.getAttribute("currentLoginUser");
-
-        User currentUser = userService.selectByPrimaryKey(user.getUserId());
+        User user = userService.selectByPrimaryKey(userId);
 
         JSONObject jo = new JSONObject();
 
-        String latestFileName = currentUser.getLatestFileName();
-
-        session.setAttribute("currentLoginUser", currentUser);
+        String latestFileName = user.getLatestFileName();
 
         if (latestFileName != null) {
             String jsonFileDirectory = request.getSession().getServletContext().getRealPath("/") +

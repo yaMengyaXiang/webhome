@@ -52,7 +52,7 @@ public class NodeController {
         } catch (Exception e) {
 
         }
-        return null;
+        return "/user/backend/link/right.jsp";
     }
 
     @RequestMapping("/showAllNodes.action")

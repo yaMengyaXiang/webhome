@@ -35,72 +35,64 @@
             resizeMain();
 
             // 基于准备好的dom，初始化echarts实例
-            var myChart = echarts.init(main);
+            myChart = echarts.init(main);
 
             myChart.showLoading();
 
-            $.get('${pageContext.request.contextPath}/static/data/1.gexf', function (xml) {
+            var otheruserId = "${otherUser.userId}";
+
+            var url = "${pageContext.request.contextPath}/user/getZheTengLinkText.action";
+
+            $.post(url, {"userId": otheruserId}, function (data) {
+                console.log(data);
+                // 返回的是json格式的字符串，注意！！！此处的json变量仅仅是个字符串，不是json对象
+                var json = data.success;
                 myChart.hideLoading();
-
-                var graph = echarts.dataTool.gexf.parse(xml);
-                var categories = [];
-                for (var i = 0; i < 8; i++) {
-                    categories[i] = {
-                        name: '类目' + i
-                    };
+                if (json == "false") {
+                    return;
                 }
-                graph.nodes.forEach(function (node) {
-                    node.itemStyle = null;
-                    node.symbolSize = 35;
-                    node.value = node.symbolSize;
-                    node.category = node.attributes.modularity_class;
-                    // Use random x, y
-                    node.x = node.y = null;
-                    node.draggable = true;
-                });
-                var option = {
-                    tooltip: {
-                        show: true,
-                        showContent: true,
-                        formatter: '{b}'
-                    },
-                    legend: [{
-                        data: categories.map(function (a) {
-                            return a.name;
-                        }),
+                // 再次转换成json对象
+                json = jQuery.parseJSON(json);
 
-                        left: 'center'
-                    }],
-                    animation: false,
-                    series : [
-                        {
-                            type: 'graph',
-                            layout: 'force',
-                            data: graph.nodes,
-                            links: graph.links,
-                            categories: categories,
-                            roam: false,
-                            label: {
-                                normal: {
-                                    show: false,
-                                    position: 'right'
-                                }
-                            },
-                            force: {
-                                repulsion: 1200,
-                                focusNodeAdjacency: false,
-                                symbol: "circle"
+                console.log(json.nodes);
+
+                var option = {
+                    legend: {
+                        data: json.categories.map(function (item) {
+                            return item.name;
+                        }),
+                        orient: 'vertical',
+                        left: 0
+                    },
+                    series: [{
+                        type: 'graph',
+                        layout: 'force',
+                        animation: false,
+                        label: {
+                            normal: {
+                                position: 'right',
+                                formatter: '{b}'
                             }
-                        }
-                    ]
+                        },
+                        draggable: true,
+                        data: json.nodes.map(function (node) {
+                            node.symbolSize = 40;
+                            return node;
+                        }),
+                        categories: json.categories,
+                        force: {
+                            // initLayout: 'circular',
+                            edgeLength: 30,
+                            repulsion: 1500,
+                            gravity: 0.1
+                        },
+                        edges: json.links
+                    }]
                 };
 
                 myChart.setOption(option);
-            }, 'xml');
 
-            myChart.on("dblclick", function(params) {
-                alert(params.name);
-            });
+            }, "json");
 
 
             $(window).resize(function(){
@@ -109,6 +101,7 @@
             });
 
         }
+
 
         $(function() {
 
@@ -166,7 +159,7 @@
 
                 <ul class="tabs" data-deep-link="true" data-deep-link-smudge-delay="600"
                     data-update-history="true" data-deep-link-smudge="true" data-deep-link-smudge="500" data-tabs id="deeplinked-tabs">
-                    <li class="tabs-title is-active"><a href="#panel1v" aria-selected="true">Ta的技能链</a></li>
+                    <li class="tabs-title is-active"><a href="#panel1v" aria-selected="true">Ta的折腾链</a></li>
                     <li class="tabs-title"><a href="#panel2v">Ta的文章</a></li>
                     <li class="tabs-title"><a href="#panel3v">Tab 3</a></li>
                     <li class="tabs-title"><a href="#panel4v">Tab 4</a></li>
@@ -175,7 +168,7 @@
                 <div class="tabs-content vertical" data-tabs-content="deeplinked-tabs" style="border: 1px solid #ccccff; border-top: none;">
                     <div class="tabs-panel is-active" id="panel1v">
 
-                        <div id="main" style="height: 400px; margin: 0 auto;" ></div>
+                        <div id="main" style="height: 420px; margin: 0 auto;" ></div>
 
                     </div>
                     <div class="tabs-panel" id="panel2v">
