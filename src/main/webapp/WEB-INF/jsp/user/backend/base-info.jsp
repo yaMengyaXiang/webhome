@@ -53,37 +53,46 @@
                             <div class="row">
                                 <div class="large-6 medium-12 columns">
                                     <label>
-                                        用户名：<input type="text" name="username">
+                                        用户名：<input type="text" name="username" value="${currentLoginUser.username}">
                                     </label>
                                 </div>
                                 <div class="large-6 medium-12 columns">
                                     <label>
-                                        密码：<input type="password" name="password">
+                                        邮箱：<input type="text" name="mailbox" value="${currentLoginUser.mailbox}">
                                     </label>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="large-6 medium-12 columns">
+                                <%--
+                                <div class="large-3 medium-12 columns">
                                     <label>
-                                        邮箱：<input type="text" name="mailbox">
+                                        密码：<input type="password" name="password" value="${currentLoginUser.password}">
+                                    </label>
+                                </div>--%>
+                                    <div class="large-6 medium-12 columns">
+                                        <label style="margin-bottom: 15px;">
+                                            个性签名：<textarea class="padding-10-div" style="min-height: 60px;" placeholder="来一个帅气的签名吧n_n"
+                                                      name="signature" maxlength="45">${currentLoginUser.signature}</textarea>
+                                        </label>
+                                    </div>
+                                <div class="large-6 medium-12 columns">
+                                    <label style="margin-bottom: 15px;">
+                                        个人简介：
+                                        <textarea class="padding-10-div" style="min-height: 60px;" placeholder="介绍一下自己吧n_n"
+                                                  name="description" maxlength="100">${currentLoginUser.description}</textarea>
                                     </label>
                                 </div>
-                                <div class="large-6 medium-12 columns">
-                                    <label>
-                                        个性签名：<input type="text" name="signature">
-                                    </label>
-                                </div>
+
                             </div>
                             <div class="row">
-                                <div class="large-6 medium-12 columns">
+                                <div class="large-6 medium-6 small-6 columns text-center">
                                     <label>
-                                        个人简介： <textarea class="padding-10-div" style="min-height: 60px;" placeholder="介绍一下自己吧n_n"
-                                                        name="description"></textarea>
+                                        <button class="button" style="">更新信息</button>
                                     </label>
                                 </div>
-                                <div class="large-6 medium-12 columns text-center">
+                                <div class="large-6 medium-6 small-6 columns text-center">
                                     <label>
-                                        <button class="button" style="margin-top: 36px; margin-bottom: 0;">更新信息</button>
+                                        <button class="button" style="">修改密码？</button>
                                     </label>
                                 </div>
                             </div>

@@ -34,60 +34,63 @@
                             <i class="fa fa-dashboard"></i>
                             我的折腾人生
                         </a>
-
                         <div class="accordion-content" data-tab-content>
-
-                            <ul class="bt-list-group" style="margin-left: 0;">
+                            <ul id="left-menu-ul" class="bt-list-group" style="margin-left: 0;">
                                 <li class="bt-list-group-item">
-                                    <a href="javascript:void(0);">
+                                    <a href="javascript:void(0);" action="${pageContext.request.contextPath}/user/toMyZheTengLink.action">
+                                        <i class="fa fa-object-ungroup"></i>
+                                        我的折腾链
+                                    </a>
+                                </li>
+                                <li class="bt-list-group-item">
+                                    <a href="javascript:void(0);" action="${pageContext.request.contextPath}/user/toMyBaseInfo.action">
                                         <i class="fa fa-address-card-o"></i>
                                         个人信息
                                     </a>
                                 </li>
                                 <li class="bt-list-group-item">
-                                    <a href="javascript:void(0);">
+                                    <a href="javascript:void(0);" action="${pageContext.request.contextPath}/user/toMyAvatar.action">
                                         <i class="fa fa-picture-o"></i>
                                         头像设置
                                     </a>
                                 </li>
                                 <li class="bt-list-group-item">
-                                    <a href="javascript:void(0);">
+                                    <a id="toMyTags" href="javascript:void(0);" action="${pageContext.request.contextPath}/user/toMyTags.action">
                                         <i class="fa fa-tags"></i>
                                         文章标签
                                     </a>
                                 </li>
                                 <li class="bt-list-group-item">
-                                    <a href="javascript:void(0);">
+                                    <a id="toMyArticles" href="javascript:void(0);" action="${pageContext.request.contextPath}/user/toMyArticles.action">
                                         <i class="fa fa-list-alt"></i>
                                         我的文章
                                     </a>
                                 </li>
                                 <li class="bt-list-group-item">
-                                    <a href="javascript:void(0);">
+                                    <a id="toWriteArticle" href="javascript:void(0);" action="${pageContext.request.contextPath}/user/toWriteArticle.action">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                        撰写文章
+                                    </a>
+                                </li>
+                                <li class="bt-list-group-item">
+                                    <a href="javascript:void(0);" action="${pageContext.request.contextPath}/user/toMyComments.action">
                                         <i class="fa fa-comments-o"></i>
                                         我的评论
                                     </a>
                                 </li>
                                 <li class="bt-list-group-item">
-                                    <a href="javascript:void(0);">
-                                        <i class="fa fa-plus-square"></i>
-                                        撰写文章
-                                    </a>
-                                </li>
-                                <li class="bt-list-group-item">
-                                    <a href="javascript:void(0);">
+                                    <a href="javascript:void(0);" action="${pageContext.request.contextPath}/user/toMyCollection.action">
                                         <i class="fa fa-folder-open-o"></i>
                                         我的收藏
                                     </a>
                                 </li>
                                 <li class="bt-list-group-item">
-                                    <a href="javascript:void(0);">
+                                    <a href="javascript:void(0);" action="${pageContext.request.contextPath}/user/toMyFoucs.action">
                                         <i class="fa fa-user-plus"></i>
                                         我的关注
                                     </a>
                                 </li>
                             </ul>
-
                         </div>
                     </li>
                 </ul>
