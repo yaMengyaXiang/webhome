@@ -40,6 +40,11 @@
         from article
     </select>
 
+    <select id="selectOtherUserArticles" parameterType="tech.zhetengrensheng.webhome.core.util.Page" resultMap="BaseResultMap">
+        select article_id, title, keyword, user_id, publish_date, summary
+        from article
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
       delete from article
       where article_id = #{articleId,jdbcType=BIGINT}

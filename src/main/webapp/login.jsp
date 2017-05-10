@@ -12,14 +12,9 @@
     <meta charset="UTF-8">
     <title>登陆</title>
 
-    <%--<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>--%>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/ztrs.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/reset.css">
+    <%@include file="/WEB-INF/jsp/common/static.jsp"%>
 
-    <script src="${pageContext.request.contextPath}/static/js/jquery-2.1.0.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/js/login.js"></script>
-    <script src="${pageContext.request.contextPath}/static/js/util.js"></script>
 
     <script type="text/javascript">
 
@@ -31,13 +26,13 @@
 
         $(document).ready(function() {
 
-            loginUtil.loginFunctions();
+            adjustHeight();
 
             $(window).resize(function() {
-                loginUtil.loginFunctions();
+                adjustHeight();
             });
 
-            $(".login-form-item-input:text:first").blur(function() {
+            $("#username").blur(function() {
 
                 var username = trim($(this).val());
 //                var username = trim($(this).attr("value"));
@@ -47,13 +42,18 @@
                     return;
                 }
 
-                var $loadImg = $("<img src='${pageContext.request.contextPath}/static/image/loading.gif' width='20px' height='20px'>");
-                $loadImg.css("position", "relative");
-                $loadImg.css("float", "right");
-                $loadImg.css("bottom", "32px");
-                $loadImg.css("margin-right", "8px");
+                var top = $(this).offset().top;
+                var left = $(this).offset().left;
+                top = top + 10;
+                var w = $(this).width();
+                left = left + w - 12;
 
-                $loadImg.insertAfter($(this));
+                var $loadImg = $("<img src='${pageContext.request.contextPath}/static/image/loading.gif' width='20px' height='20px'>");
+                $loadImg.css("position", "absolute");
+                $loadImg.css("top", top + "px");
+                $loadImg.css("left", left + "px");
+
+                $loadImg.insertBefore($(this));
 
                 console.log(username);
 
@@ -78,18 +78,18 @@
 
             });
 
-            $(".login-form-item-input:text:first").keydown(function () {
+            $("#username").keydown(function () {
                 $("label.login-error-msg-label").text("");
             });
 
-            $("#login-login-btn-a").unbind("click");
-            $("#login-login-btn-a").bind("click", function () {
+            $("#loginBtn").unbind("click");
+            $("#loginBtn").bind("click", function () {
 
 //                var username = trim($(".login-form-item-input:text:first").attr("value"));
-                var username = trim($(".login-form-item-input:text:first").val());
+                var username = trim($("#username").val());
                 console.log(username);
 
-                var password = trim($(".login-form-item-input:password:first").val());
+                var password = trim($("#password").val());
 //                var fromUrl = trim($(".login-form-item-input:hidden:first").val());
                 if ("" == username || username == null) {
                     $("label.login-error-msg-label").text("请输入用户名或邮箱 !");
@@ -100,55 +100,92 @@
                     return;
                 }
 
-                $("#login-form-div > form:first").submit();
+                $("#loginForm").submit();
 
             });
 
         });
 
+        /*适应高度，窗口放大缩小时用来调整div的高度，宽度100%不变*/
+        function adjustHeight() {
+            // 浏览器当前窗口的高度 错错！！！这个是页面的高度，应该带边框的
+            var browserHeight = $(window).height();
+
+            // 下面这个才是浏览器窗口的大小
+//            var browserHeight = $(document.body).outerHeight(true);
+
+            var $login = $(".login-box");
+            var lHeight = $login.height();
+
+            var top = (browserHeight - lHeight) >> 1;
+            top = top - 20;
+            if (top < 0) {
+                top = 0;
+            }
+            console.log(top);
+            $login.css("margin-top", top + "px");
+
+        }
+
     </script>
 
+
 </head>
-<body style="overflow-y: hidden;">
+<body style="background-color: #333234;">
 
-<div id="login-top-div" >
-    <div></div>
-</div>
-<div id="login-bottom-div">
-    <div></div>
-</div>
-
-<div id="login-form-div">
-    <form action="${pageContext.request.contextPath}/user/login.action" method="post">
-        <div class="login-logo-div">
-            <img src="${pageContext.request.contextPath}/static/image/logo-black.png">
-        </div>
-        <div class="login-form-item-div" style="height: 24px;">
-            <label class="login-error-msg-label">${errorMsg}</label>
-        </div>
-        <div class="login-form-item-div">
-            <input class="login-form-item-input" type="text" name="username" placeholder="Username or E-mail">
-        </div>
-        <div class="login-form-item-div">
-            <input class="login-form-item-input" type="password" name="password" placeholder="Password">
-        </div>
-        <div class="login-form-item-div" style="text-align: left;">
-            <div style="">
-                <label>请输入验证码: </label>
+    <div class="large-4 medium-6 small-10 small-centered large-centered medium-centered columns">
+        <div class="login-box">
+            <div class="row">
+                <div class="large-12 columns align-middle">
+                    <form id="loginForm" action="${pageContext.request.contextPath}/user/login.action" method="post">
+                        <div class="row">
+                            <div class="large-12 columns text-center login-logo">
+                                <img src="${pageContext.request.contextPath}/static/image/logo-black.png">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-12 columns" style="margin-bottom: 20px;">
+                                <label class="login-error-msg-label">${errorMsg}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-12 columns" style="">
+                                <input id="username" class="" type="text" name="username" placeholder="Username or E-mail">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <input id="password" class="" type="password" name="password" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label>请输入验证码: </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-6 medium-6 small-6 columns">
+                                <input class="" type="text" style="height: 40px;">
+                            </div>
+                            <div class="large-6 medium-6 small-6 columns text-center">
+                                <img src="" style="height: 40px; width: 120px;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-12 large-centered columns">
+                                <a id="loginBtn" href="javascript:void(0);" class="button expanded">Login</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-12 large-centered columns" style="margin-bottom: 20px;">
+                                <a id="login-forgot-a" href="javascript:void(0);" class="">忘记密码 ? 请点击这里 !</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div style="">
-                <input class="login-form-item-input" type="text" style="width: 30%;">
-                <img src="" style="height: 44px; width: 120px; float: right;">
-            </div>
         </div>
-        <div class="login-form-item-div" style="text-align: center;">
-            <a id="login-login-btn-a" href="javascript:void(0);" class="">Login</a>
-        </div>
-        <div class="login-form-item-div" style="text-align: center; margin: 20px auto;">
-            <a id="login-forgot-a" href="javascript:void(0);" class="">忘记密码 ? 请点击这里 !</a>
-        </div>
-    </form>
-</div>
+    </div>
 
 </body>
 </html>

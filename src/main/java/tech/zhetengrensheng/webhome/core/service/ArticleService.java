@@ -44,4 +44,12 @@ public interface ArticleService {
     Page<Article> selectArticles(Integer userId, Integer pageNo);
 
 
+    /**
+     * 获取其他用户的文章，带概要
+     * @param userId 用户id
+     * @param pageNo 第几页
+     * @return
+     */
+    Page<Article> selectOtherUserArticles(Integer userId, Integer pageNo);
+
 }

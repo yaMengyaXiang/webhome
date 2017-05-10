@@ -12,6 +12,8 @@
 
     $(document).ready(function() {
 
+        $(document).foundation();
+
         $("#index-to-login").unbind("click");
         $("#index-to-login").bind("click", function () {
 
@@ -61,7 +63,7 @@
 </script>
 
 <!-- 顶部logo栏-->
-<div class="row hide-for-small-only" id="logoBar">
+<div class="row hide-for-small-only" id="logoBar" style="max-width: 100%;">
     <div class="title-bar bg-black" style="padding: 0.2rem 0.5rem;">
         <div id="leftTitle" class="title-bar-left" style="margin-top: 4px; margin-left: 10px;">
             <a class="to-index" href="javascript:void(0);">

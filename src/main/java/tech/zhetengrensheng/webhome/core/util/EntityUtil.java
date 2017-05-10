@@ -46,7 +46,7 @@ public class EntityUtil {
     }
 
     public static void main(String[] args) {
-        Map<String, Object> conditions = new HashMap<>();
+        Map<String, Object> conditions = new HashMap<String, Object>();
         conditions.put("tagId", 1);
         conditions.put("tagName", "long");
 

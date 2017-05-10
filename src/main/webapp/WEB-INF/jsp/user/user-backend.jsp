@@ -14,7 +14,6 @@
 
     <%@include file="/WEB-INF/jsp/common/static.jsp"%>
 
-
 </head>
 <body>
 

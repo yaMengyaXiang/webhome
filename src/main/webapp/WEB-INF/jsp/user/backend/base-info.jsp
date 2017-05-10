@@ -49,7 +49,8 @@
 
                     <div class="accordion-content" data-tab-content>
 
-                        <form class="padding-10-div" action="${pageContext.request.contextPath}/user/login.action" method="post">
+                        <form id="userInfoForm" class="padding-10-div" action="${pageContext.request.contextPath}/user/updateInfo.action"
+                              method="post">
                             <div class="row">
                                 <div class="large-6 medium-12 columns">
                                     <label>
@@ -86,14 +87,10 @@
                             </div>
                             <div class="row">
                                 <div class="large-6 medium-6 small-6 columns text-center">
-                                    <label>
-                                        <button class="button" style="">更新信息</button>
-                                    </label>
+                                    <input type="submit" class="button" id="submitBtn" value="更新信息">
                                 </div>
                                 <div class="large-6 medium-6 small-6 columns text-center">
-                                    <label>
-                                        <button class="button" style="">修改密码？</button>
-                                    </label>
+                                    <a href="javascript:void(0);" class="button" style="">修改密码？</a>
                                 </div>
                             </div>
                         </form>

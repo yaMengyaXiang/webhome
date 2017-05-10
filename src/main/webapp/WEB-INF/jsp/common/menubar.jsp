@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="row hide-for-small-only" id="top-menubar" style="z-index: 100; width: 100%; position: relative;">
+<div class="row hide-for-small-only" id="top-menubar" style="z-index: 100; max-width: 100%; position: relative;">
     <div class="top-bar" style="width: 100%; background-color: white; border-bottom: 1px solid #ccccff;">
         <div style="width: 95%; margin: 0 auto; text-align: center;">
             <div class="medium-2 columns">

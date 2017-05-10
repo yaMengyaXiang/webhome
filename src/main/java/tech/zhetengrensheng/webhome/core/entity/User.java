@@ -15,8 +15,17 @@ public class User implements Serializable {
     private String description; // 个人描述
     private String signature;   // 个性签名
     private String latestFileName;  // 折腾链文件的名称
+    private String avatar;      // 头像
 
     public User() {
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getLatestFileName() {

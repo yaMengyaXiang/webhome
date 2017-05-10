@@ -2,7 +2,9 @@ package tech.zhetengrensheng.webhome.core.facade;/**
  * Created by Long on 2017-04-27.
  */
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import tech.zhetengrensheng.webhome.core.entity.Article;
 import tech.zhetengrensheng.webhome.core.entity.Comment;
 import tech.zhetengrensheng.webhome.core.entity.User;
@@ -11,14 +13,14 @@ import tech.zhetengrensheng.webhome.core.service.CommentService;
 import tech.zhetengrensheng.webhome.core.service.TagService;
 import tech.zhetengrensheng.webhome.core.service.UserService;
 import tech.zhetengrensheng.webhome.core.util.Constants;
+import tech.zhetengrensheng.webhome.core.util.ImageUtil;
 import tech.zhetengrensheng.webhome.core.util.Page;
 import tech.zhetengrensheng.webhome.core.util.PageNumberGenerator;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * 文章行为的门面类，让service层稍微解耦
@@ -186,6 +188,47 @@ public class UserBehaviorFacade {
 
         commentService.insert(comment);
         articleService.update(article);
+    }
+
+
+    /**
+     * 上传图片，先对图片进行裁剪，再保存裁剪后的图片
+     * @param avatar 源图片
+     * @param uploadPath 上传的路径
+     * @param cropX 从X轴哪里开始裁剪
+     * @param cropY 从Y轴哪里开始裁剪
+     * @param cropWidth 裁剪的宽度
+     * @param cropHeight 裁剪的高度
+     * @param userId 用户id
+     * @throws Exception
+     */
+    public void uploadImage(MultipartFile avatar, String uploadPath, Integer cropX, Integer cropY,
+                            Integer cropWidth, Integer cropHeight, Integer userId) throws Exception {
+
+        File dir = new File(uploadPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        // 获取后缀名
+        String originalFilename = avatar.getOriginalFilename();
+
+        String extension = FilenameUtils.getExtension(originalFilename);
+
+        String fileName = UUID.randomUUID().toString() + "." + extension;
+
+        System.out.println(fileName);
+
+        File imageFile = new File(uploadPath, fileName);
+
+        ImageUtil.cutImage(avatar.getInputStream(), cropX, cropY, cropWidth, cropHeight, imageFile);
+
+        User tmp = new User();
+        tmp.setUserId(userId);
+        tmp.setAvatar(imageFile.getName());
+
+        userService.update(tmp);
+
     }
 
 }

@@ -37,3 +37,4 @@
 <script src="${pageContext.request.contextPath}/static/js/wangEditor-override.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/ztrs.css">
+<link rel="icon" href="${pageContext.request.contextPath}/static/image/favicon.ico">

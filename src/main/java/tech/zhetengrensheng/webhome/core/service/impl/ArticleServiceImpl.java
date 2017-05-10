@@ -82,4 +82,23 @@ public class ArticleServiceImpl implements ArticleService {
 
         return pageArticles;
     }
+
+
+    @Override
+    public Page<Article> selectOtherUserArticles(Integer userId, Integer pageNo) {
+
+        Page<Article> pageArticles = new Page<Article>(pageNo);
+
+        Map<String, Object> conditions = new HashMap<String, Object>(1);
+        conditions.put("userId", userId);
+
+        pageArticles.setConditions(conditions);
+
+        List<Article> articles = articleDao.selectOtherUserArticles(pageArticles);
+
+        pageArticles.setResults(articles);
+
+        return pageArticles;
+
+    }
 }

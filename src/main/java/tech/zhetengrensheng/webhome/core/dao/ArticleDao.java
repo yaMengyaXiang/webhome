@@ -31,4 +31,11 @@ public interface ArticleDao {
      */
     List<Article> selectArticles(Page<Article> page);
 
+    /**
+     * 获取其他用户的文章，带概要
+     * @param page
+     * @return
+     */
+    List<Article> selectOtherUserArticles(Page<Article> page);
+
 }

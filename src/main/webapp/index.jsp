@@ -63,7 +63,7 @@
                     </div>
                     <div class="data-list-div" style="height: 290px;">
                         <ul>
-                            <li>ddddddddddddddddddddddddd</li>
+                            <li>ddddaaaaaaaaaaaaaaaaaaadd</li>
                             <li>ddddddddddddddddddddddddd</li>
                             <li>ddddddddddddddddddddddddd</li>
                             <li>ddddddddddddddddddddddddd</li>
@@ -77,7 +77,7 @@
             </div>
             <div class="large-8 medium-12 small-12 columns">
 
-                <div class="orbit" role="region" aria-label="Favorite Space Pictures" data-orbit
+                <div id="orbit"  class="orbit" role="region" aria-label="Favorite Space Pictures" data-orbit
                      data-options="animInFromLeft:fade-in; animInFromRight:fade-in; animOutToLeft:fade-out; animOutToRight:fade-out;">
                     <ul class="orbit-container" tabindex="0" style="height: 350px;">
                         <button style="background-image: url(${pageContext.request.contextPath}/static/image/left-arrow.png);" class="orbit-previous" aria-label="previous" tabindex="0">
@@ -115,6 +115,13 @@
 
                 <script>
                     $(document).foundation();
+//                    $('#orbit').foundation();
+
+                    $(window).resize(function () {
+//                        $(document).foundation('_reset');
+//                        $('#orbit').foundation('_reset');
+                    });
+
                 </script>
 
             </div>

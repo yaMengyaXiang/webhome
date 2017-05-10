@@ -33,4 +33,9 @@ public interface Constants {
 	 */
 	public static final String ZHE_TENG_LINK_FILE_DIR = "/static/data/zhetenglink/";
 
+	/**
+	 * 图片上传的目录
+	 */
+	public static final String IMAGE_UPLOAD_DIR = "/static/data/upload/image/";
+
 }

@@ -1,10 +1,17 @@
 package tech.zhetengrensheng.webhome.core.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import sun.misc.BASE64Decoder;
 import tech.zhetengrensheng.webhome.core.entity.*;
+import tech.zhetengrensheng.webhome.core.facade.UserBehaviorFacade;
 import tech.zhetengrensheng.webhome.core.service.*;
 import tech.zhetengrensheng.webhome.core.util.*;
 
@@ -12,7 +19,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by Long on 2017/3/26.
@@ -36,6 +47,9 @@ public class UserController {
     @Resource
     private NodeService nodeService;
 
+    @Resource
+    private UserBehaviorFacade userBehaviorFacade;
+
     @RequestMapping("/validate.action")
     @ResponseBody
     public String validate(String username) {
@@ -51,7 +65,6 @@ public class UserController {
 
         return jo.toString();
     }
-
 
     @RequestMapping("/getCurrentUserId.action")
     @ResponseBody
@@ -72,7 +85,6 @@ public class UserController {
 
         return jo.toString();
     }
-
 
     @RequestMapping("/toLogin.action")
     public String toLogin(HttpServletRequest request) {
@@ -121,6 +133,10 @@ public class UserController {
             session.setAttribute("currentLoginUser", user);
             // 一小时
             session.setMaxInactiveInterval(1 * 60 * 60);
+
+            if (nextUri == null) {
+                nextUri = "/";
+            }
 
             return "redirect:" + nextUri;
         }
@@ -243,11 +259,40 @@ public class UserController {
         if (userId != null) {
             User user = userService.selectByPrimaryKey(userId);
 
+            Page<Article> pageArticles = articleService.selectOtherUserArticles(userId, 1);
+
+            List<Integer> pageNums = PageNumberGenerator.generator(pageArticles.getCurrentPage(), pageArticles.getTotalPageNum());
+
             request.setAttribute("otherUser", user);
+            request.setAttribute("pageArticles", pageArticles);
+            request.setAttribute("pageNums", pageNums);
 
         }
 
         return "user/other-user-info.jsp";
+    }
+
+    @RequestMapping("/showOtherUserArticles.action")
+    public String showOtherUserArticles(Integer userId, Integer pageNo, HttpServletRequest request) {
+        try {
+            if (pageNo == null) {
+                pageNo = 1;
+            }
+
+            Page<Article> pageArticles = articleService.selectOtherUserArticles(userId, pageNo);
+
+            List<Integer> pageNums = PageNumberGenerator.generator(pageArticles.getCurrentPage(), pageArticles.getTotalPageNum());
+
+            request.setAttribute("pageArticles", pageArticles);
+            request.setAttribute("pageNums", pageNums);
+            request.setAttribute("userId", userId);
+
+            return "user/other-user-articles.jsp";
+
+        } catch (Exception e) {
+            return "user/other-user-articles.jsp";
+        }
+
     }
 
     @RequestMapping("/getZheTengLinkText.action")
@@ -280,6 +325,57 @@ public class UserController {
 
         return jo.toJSONString();
 
+    }
+
+    @RequestMapping("/uploadImage.action")
+    @ResponseBody
+    public String uploadImage(@RequestParam(value = "avatar", required = false) MultipartFile avatar, HttpServletRequest request) {
+        JSONObject jo = new JSONObject();
+
+        jo.put("success", "false");
+
+        try {
+            // 获取图片裁剪的具体参数
+            Integer cropX = Integer.parseInt(request.getParameter("cropX"));
+            Integer cropY = Integer.parseInt(request.getParameter("cropY"));
+            Integer cropHeight = Integer.parseInt(request.getParameter("cropHeight"));
+            Integer cropWidth = Integer.parseInt(request.getParameter("cropWidth"));
+
+            // 上传路径
+            String uploadPath = request.getSession().getServletContext().getRealPath("/") + Constants.IMAGE_UPLOAD_DIR;
+
+            HttpSession session = request.getSession(false);
+            User user = (User) session.getAttribute("currentLoginUser");
+
+            userBehaviorFacade.uploadImage(avatar, uploadPath, cropX, cropY, cropWidth, cropHeight, user.getUserId());
+
+            User newUser = userService.selectByPrimaryKey(user.getUserId());
+            session.setAttribute("currentLoginUser", newUser);
+
+            jo.put("success", "true");
+
+        } catch (Exception e) {
+            jo.put("success", "false");
+        }
+
+        return jo.toJSONString();
+    }
+
+
+    @RequestMapping("/updateInfo.action")
+    public String updateInfo(User user, HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+        User currentLoginUser = (User) session.getAttribute("currentLoginUser");
+
+        user.setUserId(currentLoginUser.getUserId());
+
+        userService.update(user);
+
+        User newUser = userService.selectByPrimaryKey(user.getUserId());
+        session.setAttribute("currentLoginUser", newUser);
+
+        return "redirect:/user/toMyBaseInfo.action";
     }
 
 }
